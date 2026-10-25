@@ -11,88 +11,70 @@
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: "微软雅黑", sans-serif; -webkit-tap-highlight-color: transparent; }
 :root { 
     --gold: #ffd700; 
-    --gold-dark: #d4a34b; 
     --btn-blue: linear-gradient(180deg, #4facfe 0%, #00f2fe 100%); 
     --btn-orange: linear-gradient(180deg, #ffb347 0%, #ff7b00 100%);
-    --card-w: 22px;
-    --card-h: 32px;
 }
 body { 
     background: #000; 
     color: #fff; height: 100vh; overflow: hidden; display: flex; flex-direction: column; position: relative; 
 }
-/* 去除了所有水印 */
 input, button, select { outline: none; border: none; font-family: inherit; }
 .hidden { display: none !important; }
 
-/* 登录与大厅 */
+/* 登录与大厅（简化处理，保留核心） */
 .login-box { display: none; width: 100%; height: 100%; padding: 40px 20px; flex-direction: column; justify-content: center; position: relative; z-index: 10; background: rgba(0,0,0,0.8); }
 .login-title { text-align: center; font-size: 32px; font-weight: bold; color: var(--gold); margin-bottom: 30px; }
 .input-group { margin-bottom: 15px; }
 .input-group label { display: block; font-size: 13px; color: #aaa; margin-bottom: 5px; }
 .input-group input { width: 100%; height: 44px; background: rgba(42,45,59,0.8); border: 1px solid #444; border-radius: 8px; padding: 0 12px; font-size: 15px; color: #fff; }
 .btn { width: 100%; height: 44px; border-radius: 8px; background: var(--gold); color: #111; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-.btn-outline { background: transparent; border: 1px solid #555; color: #ccc; }
-.btn-wechat { background: #07c160; color: #fff; margin-top: 20px; }
-
 .lobby-page { display: none; width: 100%; height: 100%; flex-direction: column; position: relative; z-index: 10; background: rgba(10,5,20,0.9); }
 .lobby-header { display: flex; align-items: center; padding: 15px; gap: 15px; background: rgba(0,0,0,0.7); border-bottom: 1px solid rgba(255,255,255,0.1); }
 .user-avatar { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--gold); background: #222; display: flex; justify-content: center; align-items: center; font-size: 20px; font-weight: bold; color: var(--gold);}
 .user-info { flex: 1; }
 .user-name { font-size: 16px; font-weight: bold; }
-.user-id { font-size: 12px; color: #bbb; }
 .logout-btn { background: transparent; border: 1px solid #555; color: #aaa; padding: 4px 8px; border-radius: 12px; font-size: 12px; cursor: pointer; }
-.header-icons { display: flex; gap: 15px; font-size: 12px; }
-.icon-item { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; }
-.icon-item span { font-size: 22px; color: var(--gold); }
 .game-grid { flex: 1; padding: 15px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; align-content: start; }
 .game-card { background: rgba(30,18,56,0.9); border: 2px solid #8338ec; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 10px; cursor: pointer; height: 160px;}
 .game-card h3 { font-size: 20px; font-weight: bold; color: var(--gold); margin-bottom: 5px; }
-.game-card p { font-size: 12px; color: #ccc; }
 
-/* 游戏房间 - 1:1复刻蓝桌 */
-.modal-mask { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 9999; }
-.modal-box { width: 320px; background: #1e2230; border: 1px solid var(--gold); border-radius: 12px; padding: 20px; text-align: center; }
-.modal-input { width: 100%; height: 40px; background: #2a2d3b; border: 1px solid #444; border-radius: 8px; padding: 0 12px; font-size: 15px; color: #fff; margin-bottom: 10px; }
-.modal-btn { width: 100%; height: 42px; border-radius: 8px; background: var(--gold); color: #333; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-.modal-btn.cancel { background: #444; color: #ccc; }
-
+/* ================= 游戏房间 1:1复刻 ================= */
 .game-room { 
     display: none; width: 100%; height: 100%; position: relative; flex-direction: column; z-index: 1; 
-    background: #111;
+    background: #09050f; /* 外围深色 */
 }
-/* 顶部信息栏 */
+/* 顶部信息 */
 .top-bar { 
     height: 50px; display: flex; flex-direction: column; justify-content: center; align-items: center; 
-    background: transparent; padding-top: env(safe-area-inset-top); position: relative; z-index: 10;
+    position: relative; z-index: 10; padding-top: env(safe-area-inset-top);
 }
 .top-round-text { font-size: 16px; font-weight: bold; letter-spacing: 1px; text-shadow: 1px 1px 2px #000;}
 .top-room-id { font-size: 13px; color: #ccc; margin-top: 2px;}
 
-/* 牌桌背景 */
+/* 牌桌纯CSS绘制，无水印 */
 .table-bg {
-    position: absolute; top: 70px; bottom: 80px; left: 15px; right: 15px;
+    position: absolute; top: 60px; bottom: 70px; left: 10px; right: 10px;
     background: radial-gradient(circle at center, #1e88e5 0%, #0d47a1 100%);
-    border-radius: 30px; border: 4px solid #5c6bc0;
+    border-radius: 30px; border: 3px solid #5c6bc0;
     box-shadow: inset 0 0 40px rgba(0,0,0,0.8), 0 10px 20px rgba(0,0,0,0.5);
-    z-index: 0; overflow: hidden;
+    z-index: 0;
 }
 .table-bg::after {
-    content: ''; position: absolute; top: 10px; left: 10px; right: 10px; bottom: 10px;
-    border: 2px solid rgba(255,255,255,0.2); border-radius: 20px; pointer-events: none;
+    content: ''; position: absolute; top: 8px; left: 8px; right: 8px; bottom: 8px;
+    border: 2px solid rgba(255,255,255,0.15); border-radius: 22px; pointer-events: none;
 }
 
 .game-area { flex: 1; position: relative; overflow: hidden; z-index: 1; }
 
-/* 中央表盘与文字 */
-.center-area { position: absolute; top: 35%; left: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 10; pointer-events: none; width: 100%;}
-.phase-text { font-size: 20px; color: #ffd700; font-weight: bold; text-shadow: 1px 1px 3px #000; margin-bottom: 15px; letter-spacing: 2px;}
+/* 中央文字与倒计时 */
+.center-area { position: absolute; top: 38%; left: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 10; pointer-events: none; width: 100%;}
+.phase-text { font-size: 22px; color: #ffcc00; font-weight: bold; text-shadow: 1px 1px 3px #000; margin-bottom: 15px; letter-spacing: 2px;}
 .timer-clock {
-    width: 60px; height: 60px; border-radius: 50%;
+    width: 64px; height: 64px; border-radius: 50%;
     background: radial-gradient(circle, #4caf50, #2e7d32);
     border: 3px solid #a5d6a7;
     display: flex; justify-content: center; align-items: center;
-    font-size: 28px; font-weight: bold; margin: 0 auto; position: relative;
+    font-size: 30px; font-weight: bold; margin: 0 auto; position: relative; color: #fff;
     box-shadow: 0 4px 10px rgba(0,0,0,0.5), inset 0 2px 5px rgba(255,255,255,0.4);
 }
 .timer-clock::before, .timer-clock::after {
@@ -103,111 +85,90 @@ input, button, select { outline: none; border: none; font-family: inherit; }
 .timer-clock::before { left: -10px; transform: rotate(-30deg); }
 .timer-clock::after { right: -10px; transform: rotate(30deg); }
 
-/* 观战提示大字 */
-.watching-text { position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%); font-size: 32px; font-weight: 900; color: #fff; background: linear-gradient(90deg, rgba(100,50,200,0.9), rgba(200,100,250,0.9)); padding: 5px 30px; border-radius: 10px; text-shadow: 2px 2px 5px #000; z-index: 50; pointer-events: none; letter-spacing: 5px; border: 2px solid #fff;}
+/* 观战提示 */
+.watching-text { position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%); font-size: 36px; font-weight: 900; color: #fff; background: linear-gradient(90deg, rgba(100,50,200,0.9), rgba(200,100,250,0.9)); padding: 5px 30px; border-radius: 10px; text-shadow: 2px 2px 5px #000; z-index: 50; pointer-events: none; letter-spacing: 5px; border: 2px solid #fff;}
 
-/* 固定座位区 */
+/* ================= 座位槽位系统 ================= */
 .seat-area { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
 
-/* 座位框：空位或有人 */
-.seat-box {
-    position: absolute; width: 60px; display: flex; flex-direction: column; align-items: center;
-    pointer-events: auto; transform: translate(-50%, -50%); z-index: 10;
-}
-
-/* 1. 空位形状 1:1 还原 */
+/* 空位形状 1:1 */
 .seat-box.empty {
-    width: 54px; height: 74px; background: rgba(0,0,0,0.6); border: 2px solid #b8860b; border-radius: 8px;
-    justify-content: center; cursor: pointer; box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+    position: absolute; width: 56px; height: 76px; background: rgba(0,0,0,0.6); border: 2px solid #b8860b; border-radius: 8px;
+    display: flex; flex-direction: column; justify-content: center; align-items: center; pointer-events: auto; cursor: pointer;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.8); z-index: 5;
 }
 .empty-arrow { color: #ffc107; font-size: 22px; line-height: 1; margin-bottom: 2px; font-weight: bold;}
 .empty-name { color: #fff; font-size: 11px; font-weight: bold; }
 
-/* 2. 已入座样式 */
-.avatar-box {
-    width: 48px; height: 48px; border-radius: 6px; border: 1px solid #555; background: #222;
-    position: relative; overflow: visible;
+/* 已入座玩家 */
+.seat-box.occupied {
+    position: absolute; display: flex; align-items: center; pointer-events: auto; z-index: 5;
 }
-.avatar-box img { width: 100%; height: 100%; border-radius: 6px; object-fit: cover;}
+/* 左边玩家（头像在左，牌在右） */
+.seat-box.left-side { flex-direction: row; transform: translateY(-50%); }
+.seat-box.left-side .cards-part { position: absolute; left: 65px; display: flex; gap: 2px; }
+/* 右边玩家（牌在左，头像在右） */
+.seat-box.right-side { flex-direction: row-reverse; transform: translateY(-50%); }
+.seat-box.right-side .cards-part { position: absolute; right: 65px; display: flex; gap: 2px; }
+
+/* 头像信息区 */
+.avatar-part { width: 52px; display: flex; flex-direction: column; align-items: center; position: relative;}
+.avatar-img { width: 48px; height: 48px; border-radius: 6px; border: 1px solid #555; background: #222; object-fit: cover;}
 .constellation-tag {
     position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%);
-    background: #1e5b9e; color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 10px;
+    background: #1e5b9e; color: #fff; font-size: 10px; padding: 0 5px; border-radius: 4px;
     border: 1px solid #55aaff; white-space: nowrap; font-weight: bold;
 }
-.player-name-box { background: rgba(0,0,0,0.7); border-radius: 10px; font-size: 11px; margin-top: 10px; padding: 1px 6px; white-space: nowrap; color: #fff;}
+.player-name-box { font-size: 11px; margin-top: 10px; color: #fff; white-space: nowrap;}
 .player-score-text { color: #ffd700; font-size: 16px; font-weight: bold; text-shadow: 1px 1px 2px #000; margin-top: 2px;}
 
-/* 卡牌横排（放在头像两侧或下方） */
-.cards-part { position: absolute; display: flex; gap: 2px; z-index: 15;}
-.cards-part.left-side { left: 65px; top: 5px; }
-.cards-part.right-side { right: 65px; top: 5px; }
-.cards-part.top-side { top: 80px; left: 50%; transform: translateX(-50%); }
-
-/* 牌的小样式 */
-.small-card { width: var(--card-w); height: var(--card-h); border-radius: 3px; border: 1px solid #ccc; background: #fff; color: #333; display: flex; justify-content: center; align-items: center; font-size: 12px; font-weight: bold; flex-direction: column;}
+/* 固定卡牌样式（大小不变） */
+.small-card { 
+    width: 32px; height: 46px; border-radius: 3px; border: 1px solid #ccc; background: #fff; color: #333; 
+    display: flex; justify-content: center; align-items: center; font-size: 14px; font-weight: bold; flex-direction: column;
+    position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
 .small-card.red { color: #ff4d4f; }
 .small-card.back { background: #1a3b5c url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><rect width="10" height="10" fill="%231e3c72"/><path d="M0 10L10 0" stroke="%232a5298" stroke-width="2"/></svg>'); border-color: #3b6bb4; color: transparent; }
-.small-card .suit { font-size: 14px; }
+.small-card .suit { font-size: 16px; }
 
 /* 牌型文字 1:1 还原 */
 .card-type-overlay { 
     position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    font-size: 22px; font-weight: 900; color: #ffe600;
+    font-size: 26px; font-weight: 900; color: #ffe600;
     -webkit-text-stroke: 2px #5c2e00; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
     white-space: nowrap; pointer-events: none; z-index: 20; font-family: 'ZCOOL KuaiLe', cursive;
 }
 .type-max { color: #00f2fe; -webkit-text-stroke: 2px #003366; }
 .type-normal { color: #aaaaaa; -webkit-text-stroke: 2px #333; }
 
-/* 角标：庄、倍数、准备 */
+/* 各种角标 */
 .banker-icon { position: absolute; top: -10px; left: -10px; background: #e53935; color: #fff; font-size: 11px; width: 22px; height: 22px; display: flex; justify-content: center; align-items: center; border-radius: 50%; font-weight: bold; border: 1px solid #fff; z-index: 20;}
-.multi-badge { position: absolute; top: -12px; left: -15px; color: #fff; font-size: 18px; font-weight: 900; font-family: 'Impact', sans-serif; text-shadow: 1px 1px 2px #000, 0 0 5px #ff9800; z-index: 20; }
-.ready-badge { position: absolute; top: 15px; right: -45px; color: #ff9800; font-size: 20px; font-weight: bold; font-family: 'ZCOOL KuaiLe', cursive; text-shadow: 1px 1px 3px #000, 0 0 8px #ffd700; z-index: 20; transform: rotate(-15deg);}
+.multi-badge { position: absolute; top: -10px; right: -15px; color: #fff; font-size: 18px; font-weight: 900; font-family: 'Impact', sans-serif; text-shadow: 1px 1px 2px #000, 0 0 5px #ff9800; z-index: 20; }
+.ready-badge { position: absolute; top: 15px; color: #ff9800; font-size: 22px; font-weight: bold; font-family: 'ZCOOL KuaiLe', cursive; text-shadow: 1px 1px 3px #000, 0 0 8px #ffd700; z-index: 20;}
+.left-side .ready-badge { right: -60px; }
+.right-side .ready-badge { left: -60px; }
 
-/* 我的区域 (固定底部) */
+/* ================= 我的区域（底部） ================= */
 .my-area {
-    position: absolute; bottom: 60px; left: 0; width: 100%; height: 100px; pointer-events: none;
+    position: absolute; bottom: 65px; left: 0; width: 100%; height: 100px; pointer-events: none; z-index: 20;
 }
 .my-seat-info {
-    position: absolute; left: 10px; bottom: 0; width: 60px; pointer-events: auto; display: flex; flex-direction: column; align-items: center;
+    position: absolute; left: 10px; bottom: 5px; width: 52px; pointer-events: auto; display: flex; flex-direction: column; align-items: center;
 }
 .my-cards-box {
-    position: absolute; left: 80px; bottom: 10px; display: flex; gap: 4px; pointer-events: auto;
+    position: absolute; left: 70px; bottom: 5px; display: flex; gap: 4px; pointer-events: auto;
 }
 .my-card-large {
-    width: 46px; height: 64px; border-radius: 5px; border: 2px solid #ccc; background: #fff; color: #333;
-    display: flex; justify-content: center; align-items: center; font-size: 22px; font-weight: bold; flex-direction: column;
+    width: 52px; height: 74px; border-radius: 5px; border: 2px solid #ccc; background: #fff; color: #333;
+    display: flex; justify-content: center; align-items: center; font-size: 24px; font-weight: bold; flex-direction: column;
     box-shadow: 0 4px 8px rgba(0,0,0,0.6); position: relative;
 }
 .my-card-large.red { color: #ff4d4f; }
 .my-card-large.back { background: repeating-linear-gradient(45deg, #1e3c72, #1e3c72 6px, #2a5298 6px, #2a5298 12px); border-color: #3b6bb4; color: transparent; cursor: pointer; animation: pulse 1.5s infinite;}
-.my-card-large .suit { font-size: 26px; }
+.my-card-large .suit { font-size: 30px; }
 
-/* 中央暗牌区 (摸牌) */
-.center-reveal-zone {
-    position: absolute; bottom: 180px; left: 50%; transform: translateX(-50%); z-index: 50; display: none; flex-direction: column; align-items: center;
-}
-.big-dark-card {
-    width: 70px; height: 100px; border-radius: 6px; border: 2px solid #ccc; background: repeating-linear-gradient(45deg, #1e3c72, #1e3c72 6px, #2a5298 6px, #2a5298 12px); box-shadow: 0 4px 15px rgba(0,0,0,0.8);
-    display: flex; justify-content: center; align-items: center; cursor: pointer; animation: pulse 1.5s infinite;
-}
-
-/* 底部中央操作按钮 */
-.center-action-area {
-    position: absolute; bottom: 180px; left: 50%; transform: translateX(-50%); z-index: 60; display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; pointer-events: none;
-}
-.action-big-btn {
-    pointer-events: auto; padding: 10px 50px; border-radius: 30px; background: var(--btn-orange); color: #fff; font-size: 24px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.6); border: 2px solid #ffeb3b; cursor: pointer; letter-spacing: 5px;
-}
-.action-row {
-    display: flex; gap: 10px; pointer-events: auto; flex-wrap: wrap; justify-content: center;
-}
-.action-small-btn {
-    padding: 6px 18px; border-radius: 20px; background: var(--btn-orange); color: #fff; font-size: 16px; font-weight: bold; box-shadow: 0 3px 6px rgba(0,0,0,0.5); border: 1px solid #fff; cursor: pointer;
-}
-.action-small-btn.cancel { background: var(--btn-blue); }
-
-/* 底部操作栏 */
+/* ================= 底部操作区与按钮 ================= */
 .bottom-bar { 
     position: absolute; bottom: 0; left: 0; width: 100%; height: 60px;
     display: flex; justify-content: space-around; align-items: center; 
@@ -220,8 +181,32 @@ input, button, select { outline: none; border: none; font-family: inherit; }
 .bg-red { background: #e53935; }
 .bg-purple { background: #8e24aa; }
 
-/* 聊天面板 */
-.floating-chat-btn { display: none; } /* 改用底部按钮 */
+/* 中央悬浮操作按钮 */
+.center-action-area {
+    position: absolute; bottom: 170px; left: 50%; transform: translateX(-50%); z-index: 60; display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; pointer-events: none;
+}
+.action-big-btn {
+    pointer-events: auto; padding: 10px 50px; border-radius: 30px; background: var(--btn-orange); color: #fff; font-size: 24px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.6); border: 2px solid #ffeb3b; cursor: pointer; letter-spacing: 5px;
+}
+.action-big-btn.blue { background: var(--btn-blue); border-color: #fff; letter-spacing: 2px;}
+.action-row {
+    display: flex; gap: 10px; pointer-events: auto; flex-wrap: wrap; justify-content: center;
+}
+.action-small-btn {
+    padding: 8px 22px; border-radius: 25px; background: var(--btn-orange); color: #fff; font-size: 20px; font-weight: bold; box-shadow: 0 3px 6px rgba(0,0,0,0.5); border: 2px solid #ffeb3b; cursor: pointer;
+}
+.action-small-btn.cancel { background: #1976d2; border-color: #64b5f6; }
+
+/* 摸牌区（未翻牌前中间显示） */
+.center-reveal-zone {
+    position: absolute; bottom: 170px; left: 50%; transform: translateX(-50%); z-index: 50; display: none; flex-direction: column; align-items: center;
+}
+.big-dark-card {
+    width: 70px; height: 100px; border-radius: 6px; border: 2px solid #ccc; background: repeating-linear-gradient(45deg, #1e3c72, #1e3c72 6px, #2a5298 6px, #2a5298 12px); box-shadow: 0 4px 15px rgba(0,0,0,0.8);
+    display: flex; justify-content: center; align-items: center; cursor: pointer; animation: pulse 1.5s infinite;
+}
+
+/* 聊天与开发者面板 */
 .chat-panel { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(20,25,40,0.95); border-top: 1px solid #333; padding: 10px; z-index: 2000; transform: translateY(100%); transition: 0.3s; }
 .chat-panel.show { transform: translateY(0); }
 .chat-box { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -229,27 +214,26 @@ input, button, select { outline: none; border: none; font-family: inherit; }
 .chat-toast { position: fixed; bottom: 120px; left: 15px; display: flex; flex-direction: column; gap: 5px; z-index: 150; pointer-events: none; }
 .chat-toast-line { background: rgba(0,0,0,0.7); border-radius: 15px; padding: 6px 14px; font-size: 13px; color: #fff; border: 1px solid var(--gold); }
 
-/* 可拖拽开发者面板 K */
 .dev-panel { 
     position: fixed; top: 80px; right: 10px; background: rgba(30,34,48,0.95); border: 1px solid var(--gold); border-radius: 8px; 
     z-index: 1000; width: 40px; height: 40px; overflow: hidden; display: none; transition: width 0.2s, height 0.2s; box-shadow: 0 2px 10px rgba(0,0,0,0.5);
     touch-action: none;
 }
 .dev-panel.expanded { width: 200px; height: auto; }
-.dev-header { 
-    width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; cursor: move; background: rgba(0,0,0,0.8);
-}
-.dev-panel.expanded .dev-header { width: 100%; justify-content: space-between; padding: 8px; background: transparent;}
+.dev-header { width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; cursor: move; background: rgba(0,0,0,0.8); }
+.dev-panel.expanded .dev-header { width: 100%; justify-content: space-between; padding: 8px; background: transparent; }
 .dev-header h4 { color: var(--gold); font-size: 18px; font-weight: bold; margin: 0;}
 .dev-header span { color: #fff; display: none; }
 .dev-panel.expanded .dev-header span { display: block; font-size: 12px; cursor: pointer;}
 .dev-content { padding: 10px; display: none; }
+
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0, 242, 254, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(0, 242, 254, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 242, 254, 0); } }
 </style>
 </head>
 <body>
 <audio id="bgmAudio" src="bgm.mp3" loop></audio>
 
-<!-- 登录与大厅略写 -->
+<!-- 登录/大厅极简 -->
 <div class="login-box" id="loginBox">
     <div class="login-title">新天地</div>
     <div class="input-group"><label>账号</label><input type="text" id="loginAccount" placeholder="请输入账号"></div>
@@ -259,7 +243,7 @@ input, button, select { outline: none; border: none; font-family: inherit; }
 <div class="lobby-page" id="lobbyPage">
     <div class="lobby-header">
         <div class="user-avatar" id="lobbyAvatar">😎</div>
-        <div class="user-info"><div class="user-name" id="lobbyName">玩家</div><div class="user-id" id="lobbyId">编号: ---</div></div>
+        <div class="user-info"><div class="user-name" id="lobbyName">玩家</div></div>
         <button class="logout-btn" onclick="logout()">切换账号</button>
     </div>
     <div class="game-grid">
@@ -293,7 +277,7 @@ input, button, select { outline: none; border: none; font-family: inherit; }
         <!-- 中央操作按钮 -->
         <div class="center-action-area" id="centerActionArea"></div>
 
-        <!-- 暗牌摸牌区 (在屏幕中间下方) -->
+        <!-- 摸牌区 -->
         <div class="center-reveal-zone" id="centerRevealZone">
             <div class="big-dark-card" id="centerDarkCard" onclick="revealMyCard()"></div>
             <div style="font-size:12px; color:#fff; margin-top:5px; text-shadow:0 1px 2px #000;">点击翻开</div>
@@ -302,9 +286,9 @@ input, button, select { outline: none; border: none; font-family: inherit; }
         <!-- 自己的底部区域 -->
         <div class="my-area">
             <div class="my-seat-info" id="mySeatInfo">
-                <div class="avatar-box">
+                <div class="avatar-part" style="position:relative;">
                     <div class="banker-icon" id="myBankerIcon" style="display:none;">庄</div>
-                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%232a2a2a'/><circle cx='50' cy='40' r='20' fill='%23888'/><path d='M20 90 Q50 60 80 90' stroke='%23888' stroke-width='15' fill='none'/></svg>">
+                    <img class="avatar-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%232a2a2a'/><circle cx='50' cy='40' r='20' fill='%23888'/><path d='M20 90 Q50 60 80 90' stroke='%23888' stroke-width='15' fill='none'/></svg>">
                     <div class="constellation-tag" id="myConstellation">天秤座</div>
                 </div>
                 <div class="player-name-box" id="myNameText">我</div>
@@ -328,7 +312,7 @@ input, button, select { outline: none; border: none; font-family: inherit; }
         <div class="bottom-btn circle-btn" onclick="toggleChatPanel()" style="border:1px solid #555;">💬</div>
     </div>
 
-    <!-- 可拖拽开发者面板 K -->
+    <!-- K控制面板 -->
     <div class="dev-panel" id="devPanel">
         <div class="dev-header" id="devHeader">
             <h4>K</h4>
@@ -336,7 +320,7 @@ input, button, select { outline: none; border: none; font-family: inherit; }
         </div>
         <div class="dev-content" id="devContent">
             <div style="display: flex; gap: 5px; margin-bottom: 5px; align-items: center;">
-                <span style="font-size:12px; white-space:nowrap;">星座:</span>
+                <span style="font-size:12px; white-space:nowrap;">座位:</span>
                 <select id="devSeatName" style="flex: 1; padding: 4px; font-size: 12px; border-radius: 4px; background: #222; color: #fff; border: 1px solid #555;"></select>
             </div>
             <div style="display: flex; gap: 5px; margin-bottom: 5px;">
@@ -376,16 +360,14 @@ input, button, select { outline: none; border: none; font-family: inherit; }
 <div class="chat-panel" id="chatPanel"><div class="chat-box" id="quickChatBox"></div><div style="text-align:center; padding:10px; color:#888; cursor:pointer;" onclick="toggleChatPanel()">收起面板</div></div>
 
 <script>
-const ADMIN_ACCOUNT = 'FG520', ADMIN_PASSWORD = 'syf520';
-const constellationNames = ['白羊座','金牛座','双子座','巨蟹座','狮子座','处女座','天秤座','射手座','摩羯座','水瓶座','双鱼座','猎户座','仙女座','天龙座','凤凰座','天琴座','天鹅座','麒麟座','半人马座','大熊座','小熊座','仙后座','英仙座'];
+const constellationNames = ['白羊座','金牛座','双子座','巨蟹座','狮子座','处女座','天秤座','天蝎座','射手座','摩羯座','水瓶座','双鱼座','猎户座','仙女座','天龙座','凤凰座','天琴座','天鹅座','麒麟座','半人马座','大熊座','小熊座','仙后座','英仙座'];
 
-let currentSeat = 8, mySeatId = -1, currentRoomId = '', nowRound = 1, maxRound = 24, baseScore = 10;
+let currentRoomId = '', nowRound = 1, baseScore = 10;
 let currentMultiSpec = [1,2,5,8,12]; 
-let bankerSeat = 0, currentBetMulti = 1;
-let myRole = 'member', myNickname = '玩家', myIdSuffix = '00001', myCardCount = 0, gamePhase = 'wait', countdownTimer = null, leftTime = 0;
-let occupiedSeats = {}, seatScores = {}, playerCards = {}, playerCardInfo = {}, seatRules = {}, scoreAnimations = {}, grabMultipliers = {}, betMultipliers = {}, readySet = new Set(), autoReady = false;
-let isSpectator = true, spectatorList = []; 
-let roundHistory = []; 
+let bankerSeat = 0, mySeatId = -1;
+let myRole = 'admin', myNickname = '玩家', gamePhase = 'wait', countdownTimer = null, leftTime = 0;
+let occupiedSeats = {}, seatScores = {}, playerCards = {}, playerCardInfo = {}, seatRules = {}, grabMultipliers = {}, betMultipliers = {}, readySet = new Set(), autoReady = false;
+let isSpectator = true; 
 let isRevealed = {}; 
 let audioCache = {};
 
@@ -397,16 +379,18 @@ let startCountdownTimer = null;
 let startLeftTime = 5;
 let revealTimeoutList = []; 
 
-// 固定8个座位点的坐标 (基于百分比，自适应屏幕)
+// 固定的10个座位（左右各5个，根据图2精确校准）
 const seatPositions = [
-    { id: 1, top: 68, left: 12, class: 'left' },   // 左下
-    { id: 2, top: 48, left: 12, class: 'left' },   // 左中
-    { id: 3, top: 28, left: 12, class: 'left' },   // 左上
-    { id: 4, top: 12, left: 30, class: 'top' },    // 顶左
-    { id: 5, top: 12, left: 70, class: 'top' },    // 顶右
-    { id: 6, top: 28, left: 88, class: 'right' },  // 右上
-    { id: 7, top: 48, left: 88, class: 'right' },  // 右中
-    { id: 8, top: 68, left: 88, class: 'right' }   // 右下
+    { id: 1, top: 15, left: 20, class: 'left-side' },
+    { id: 2, top: 30, left: 20, class: 'left-side' },
+    { id: 3, top: 45, left: 20, class: 'left-side' },
+    { id: 4, top: 60, left: 20, class: 'left-side' },
+    { id: 5, top: 75, left: 20, class: 'left-side' },
+    { id: 6, top: 15, right: 20, class: 'right-side' },
+    { id: 7, top: 30, right: 20, class: 'right-side' },
+    { id: 8, top: 45, right: 20, class: 'right-side' },
+    { id: 9, top: 60, right: 20, class: 'right-side' },
+    { id: 10, top: 75, right: 20, class: 'right-side' }
 ];
 
 window.onload = function() {
@@ -424,27 +408,34 @@ window.onload = function() {
         });
     }
 
-    const p = new URLSearchParams(location.search).get('room'); 
-    const isLogined = localStorage.getItem('xtd_logined');
+    document.getElementById('loginBox').style.display = 'none';
+    currentRoomId = '新天地_' + Math.floor(100000+Math.random()*900000);
+    myNickname = '玩家' + Math.floor(Math.random()*100);
+    document.getElementById('roomIdText').innerText = currentRoomId.replace('新天地_','');
     
-    if (isLogined) {
-        myRole = localStorage.getItem('xtd_role') || 'member';
-        myNickname = localStorage.getItem('xtd_name') || '玩家';
-        document.getElementById('loginBox').style.display = 'none';
-        if (p) {
-            currentRoomId = p;
-            enterRoomDirectly();
-        } else {
-            document.getElementById('lobbyPage').style.display = 'flex';
-        }
-    } else {
-        document.getElementById('loginBox').style.display = 'flex';
-    }
-
-    initDrag(); // 初始化拖拽
+    document.getElementById('lobbyPage').style.display = 'none';
+    document.getElementById('gameRoom').style.display = 'flex';
+    
+    initDrag();
     initDevSeatOptions();
     initChatPanel();
-};
+    
+    // 自动填充8个机器人
+    for(let i=1; i<=10; i++) {
+        if(i !== mySeatId && i <= 8) {
+            occupiedSeats[i] = '玩家' + i;
+            seatScores[i] = 0;
+        }
+    }
+    mySeatId = 9; // 自己坐在9号位
+    occupiedSeats[9] = myNickname;
+    seatScores[9] = 0;
+    isSpectator = false;
+    
+    document.getElementById('devPanel').style.display = 'block';
+
+    renderSeats(); updateActionButtons();
+}
 
 function initDrag() {
     const panel = document.getElementById('devPanel');
@@ -487,51 +478,38 @@ function toggleDevPanel() {
     }
 }
 
-function getAvailableSuits() { let s = [...baseSuits]; if(currentSeat>8) s=s.concat(starSuits); return s; }
-function compareCards(a, b) { if(a.rank>b.rank) return 1; if(a.rank<b.rank) return -1; if(a.maxSuitWeight>b.maxSuitWeight) return 1; if(a.maxSuitWeight<b.maxSuitWeight) return -1; return 0; }
-
 function initDevSeatOptions() {
     const sel = document.getElementById('devSeatName');
     if(!sel) return;
     let html = '';
-    for(let i=1; i<=8; i++) {
-        html += `<option value="${i}">${constellationNames[(i-1)%8]}</option>`;
+    for(let i=1; i<=10; i++) {
+        html += `<option value="${i}">${constellationNames[(i-1)%10]}</option>`;
     }
     sel.innerHTML = html;
 }
 
-function handleLogin() { 
-    const acc = document.getElementById('loginAccount').value.trim(); 
-    if(!acc) return alert('请输入账号'); 
-    localStorage.setItem('xtd_logined','1'); localStorage.setItem('xtd_role','member');
-    localStorage.setItem('xtd_name',acc);
-    window.location.reload();
+function getAvailableSuits() { let s = [...baseSuits]; if(Object.keys(occupiedSeats).length>8) s=s.concat(starSuits); return s; }
+function compareCards(a, b) { if(a.rank>b.rank) return 1; if(a.rank<b.rank) return -1; if(a.maxSuitWeight>b.maxSuitWeight) return 1; if(a.maxSuitWeight<b.maxSuitWeight) return -1; return 0; }
+
+function toggleManualReady() { 
+    if(isSpectator) return; 
+    if(readySet.has(mySeatId)) readySet.delete(mySeatId); 
+    else readySet.add(mySeatId); 
+    renderSeats(); updateActionButtons(); checkStartGame();
 }
 
-function logout() {
-    if(confirm('确定要退出当前账号吗？')) {
-        localStorage.clear();
-        window.location.href = window.location.pathname;
-    }
+function toggleAutoReady() { 
+    if(isSpectator) return;
+    autoReady=!autoReady; 
+    if(autoReady && !readySet.has(mySeatId)) readySet.add(mySeatId); 
+    else if(!autoReady) readySet.delete(mySeatId);
+    renderSeats(); updateActionButtons(); checkStartGame();
 }
 
-function goToCreateRoom() { 
-    currentRoomId='新天地_'+Math.floor(100000+Math.random()*900000); 
-    mySeatId=-1; isSpectator=true;
-    try{history.pushState({},'',`?room=${currentRoomId}`);}catch(e){} 
-    document.getElementById('lobbyPage').style.display='none';
-    document.getElementById('gameRoom').style.display='flex';
-    enterRoomDirectly(); 
-}
-
-function enterRoomDirectly() {
-    document.getElementById('roomIdText').innerText = currentRoomId.replace('新天地_','');
-    document.getElementById('nowRound').innerText=nowRound;
-    
-    if(myRole==='admin') document.getElementById('devPanel').style.display='block';
-    
+function onSpectateClick() {
+    if(gamePhase !== 'wait' && gamePhase !== 'result') return alert('牌局中无法离开座位');
+    isSpectator = !isSpectator;
     renderSeats(); updateActionButtons();
-    checkStartGame();
 }
 
 function checkStartGame() {
@@ -542,6 +520,7 @@ function checkStartGame() {
         if(!startCountdownTimer) {
             startLeftTime = 5;
             document.getElementById('gamePhase').innerText = '准备中';
+            document.getElementById('countdown').style.display = 'flex';
             startCountdownTimer = setInterval(() => {
                 startLeftTime--;
                 document.getElementById('countdown').innerText = startLeftTime;
@@ -560,77 +539,32 @@ function checkStartGame() {
     }
 }
 
-function onSeatClick(targetSeat) {
-    if(targetSeat === mySeatId) return;
-    if(occupiedSeats[targetSeat]) return alert('该座位已有人');
-    if(gamePhase !== 'wait' && gamePhase !== 'result') return alert('牌局中无法换座');
-
-    if(mySeatId > 0) {
-        seatScores[targetSeat] = seatScores[mySeatId] || 0;
-        delete occupiedSeats[mySeatId];
-        delete seatScores[mySeatId];
-        readySet.delete(mySeatId);
-    }
-    
-    mySeatId = targetSeat;
-    isSpectator = false;
-    occupiedSeats[mySeatId] = myNickname;
-    seatScores[mySeatId] = seatScores[mySeatId] || 0;
-    
-    renderSeats(); updateActionButtons(); checkStartGame();
-}
-
-function onSpectateClick() {
-    if(gamePhase !== 'wait' && gamePhase !== 'result') return alert('牌局中无法离开座位');
-    if(isSpectator) return;
-
-    delete occupiedSeats[mySeatId];
-    readySet.delete(mySeatId);
-    mySeatId = -1;
-    isSpectator = true;
-    
-    renderSeats(); updateActionButtons(); checkStartGame();
-}
-
-function toggleManualReady() { 
-    if(isSpectator) return; 
-    if(readySet.has(mySeatId)) readySet.delete(mySeatId); 
-    else readySet.add(mySeatId); 
-    renderSeats(); updateActionButtons(); checkStartGame();
-}
-
-function toggleAutoReady() { 
-    if(isSpectator) return;
-    autoReady=!autoReady; 
-    if(autoReady && !readySet.has(mySeatId)) readySet.add(mySeatId); 
-    else if(!autoReady) readySet.delete(mySeatId);
-    renderSeats(); updateActionButtons(); checkStartGame();
-}
-
 function renderSeats() {
     const wrap = document.getElementById('seatArea'); wrap.innerHTML='';
     
     seatPositions.forEach(pos => {
         let seatId = pos.id;
-        // 如果是自己，不渲染在网格里，固定在最下方
+        // 如果是自己，固定在最下方
         if(seatId === mySeatId) {
             document.getElementById('mySeatInfo').style.display = 'flex';
             document.getElementById('myNameText').innerText = occupiedSeats[mySeatId];
             document.getElementById('myScoreText').innerText = seatScores[mySeatId] || 0;
-            document.getElementById('myConstellation').innerText = constellationNames[(seatId-1)%constellationNames.length];
+            document.getElementById('myConstellation').innerText = constellationNames[(seatId-1)%10];
             document.getElementById('myBankerIcon').style.display = (bankerSeat===seatId) ? 'flex' : 'none';
             return;
         }
 
         const div = document.createElement('div'); 
-        div.className = 'seat-box ' + (occupiedSeats[seatId] ? '' : 'empty');
-        div.style.top = pos.top + '%'; div.style.left = pos.left + '%';
+        div.className = 'seat-box ' + (occupiedSeats[seatId] ? 'occupied ' + pos.class : 'empty');
+        
+        // 定位
+        div.style.top = pos.top + '%';
+        if(pos.class === 'left-side') div.style.left = pos.left + 'px';
+        if(pos.class === 'right-side') div.style.right = pos.right + 'px';
         
         if (occupiedSeats[seatId]) {
-            div.onclick = () => onSeatClick(seatId);
-            
             let isShow = (gamePhase==='showdown' || gamePhase==='result' || isRevealed[seatId] || myRole==='admin');
-            let ch = `<div class="cards-part ${pos.class}-side">`;
+            let ch = '<div class="cards-part">';
             if (playerCards[seatId]) {
                 playerCards[seatId].forEach((c, idx) => {
                     if(!isShow) {
@@ -649,7 +583,7 @@ function renderSeats() {
             }
             
             let bankerIcon = bankerSeat === seatId ? '<div class="banker-icon">庄</div>' : '';
-            let readyBadge = readySet.has(seatId) ? '<div class="ready-badge">准备</div>' : '';
+            let readyBadge = readySet.has(seatId) && (gamePhase === 'wait' || gamePhase === 'result') ? '<div class="ready-badge">准备</div>' : '';
             
             let overlay = '';
             if(playerCardInfo[seatId] && (gamePhase==='showdown'||gamePhase==='result'||isRevealed[seatId])) {
@@ -660,21 +594,20 @@ function renderSeats() {
             
             div.innerHTML = `
                 ${bankerIcon}${multiBadge}
-                <div class="avatar-box">
-                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%232a2a2a'/><circle cx='50' cy='40' r='20' fill='%23888'/><path d='M20 90 Q50 60 80 90' stroke='%23888' stroke-width='15' fill='none'/></svg>">
-                    <div class="constellation-tag">${constellationNames[(seatId-1)%constellationNames.length]}</div>
+                <div class="avatar-part">
+                    <img class="avatar-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%232a2a2a'/><circle cx='50' cy='40' r='20' fill='%23888'/><path d='M20 90 Q50 60 80 90' stroke='%23888' stroke-width='15' fill='none'/></svg>">
+                    <div class="constellation-tag">${constellationNames[(seatId-1)%10]}</div>
+                    <div class="player-name-box">${occupiedSeats[seatId]}</div>
+                    <div class="player-score-text">${seatScores[seatId] || 0}</div>
                 </div>
-                <div class="player-name-box">${occupiedSeats[seatId]}</div>
-                <div class="player-score-text">${seatScores[seatId] || 0}</div>
                 ${readyBadge}
                 ${ch}
                 ${overlay}
             `;
         } else {
-            div.onclick = () => onSeatClick(seatId);
             div.innerHTML = `
                 <div class="empty-arrow">⬇️</div>
-                <div class="empty-name">${constellationNames[(seatId-1)%constellationNames.length]}</div>
+                <div class="empty-name">${constellationNames[(seatId-1)%10]}</div>
             `;
         }
         wrap.appendChild(div);
@@ -710,12 +643,7 @@ function updateActionButtons() {
     const a = document.getElementById('centerActionArea'); a.innerHTML='';
     const cz = document.getElementById('centerRevealZone'); cz.style.display = 'none';
     
-    if(isSpectator) {
-        if(gamePhase === 'wait' || gamePhase === 'result') {
-            a.innerHTML = `<div class="action-big-btn" onclick="alert('点击空位入座')">观战中</div>`;
-        }
-        return;
-    }
+    if(isSpectator) return;
     
     if(gamePhase==='wait' || gamePhase==='result'){ 
         const r=readySet.has(mySeatId); 
@@ -745,11 +673,10 @@ function updateActionButtons() {
     }
     else if(gamePhase==='reveal'){ 
         if(playerCards[mySeatId] && !playerCards[mySeatId][4].hide && !isRevealed[mySeatId]) {
-            a.innerHTML = `<div class="action-big-btn" onclick="doShowdownMyself()">摊 牌</div>`;
+            a.innerHTML = `<div class="action-big-btn blue" onclick="doShowdownMyself()">摊牌</div>`;
         } else if (isRevealed[mySeatId]) {
-            a.innerHTML = '<div style="color:#fff; font-size:18px; text-shadow:1px 1px 3px #000;">已摊牌</div>';
+            a.innerHTML = '<div style="color:#fff; font-size:18px; text-shadow:1px 1px 3px #000;">等待其他玩家...</div>';
         } else {
-            // 只有还没搓牌时，才显示中央的暗牌
             cz.style.display = 'flex';
             a.innerHTML = '';
         }
@@ -763,17 +690,17 @@ function startNewRound() {
     
     document.getElementById('nowRound').innerText=nowRound; 
     gamePhase='grab'; document.getElementById('gamePhase').innerText='抢庄回合'; 
-    bankerSeat=0; scoreAnimations={}; grabMultipliers={}; betMultipliers={}; isRevealed={}; 
+    bankerSeat=0; grabMultipliers={}; betMultipliers={}; isRevealed={}; 
     playerCards={}; playerCardInfo={};
     
-    for(let i=1;i<=8;i++){ 
+    for(let i=1;i<=10;i++){ 
         if(!occupiedSeats[i]||!readySet.has(i)) continue; 
         let t=seatRules[i]?seatRules[i].cardType:'random'; 
         playerCards[i]=generateSpecificCards(t); 
         playerCardInfo[i]=calcNiuNiu(playerCards[i]); 
     }
     
-    for(let i=1;i<=8;i++){
+    for(let i=1;i<=10;i++){
         if(occupiedSeats[i] && i !== mySeatId && playerCards[i]) {
             grabMultipliers[i] = Math.random() < 0.3 ? 0 : Math.floor(Math.random() * 4) + 1;
         }
@@ -800,7 +727,7 @@ function resolveBanker() {
     renderSeats(); updateActionButtons(); startTimer(5, startRevealPhase);
 
     setTimeout(() => {
-        for(let i=1; i<=8; i++) {
+        for(let i=1; i<=10; i++) {
             if(occupiedSeats[i] && i !== mySeatId && i !== bankerSeat && playerCards[i]) {
                 betMultipliers[i] = currentMultiSpec[Math.floor(Math.random() * currentMultiSpec.length)];
             }
@@ -852,7 +779,7 @@ function doShowdownMyself() {
 
 function forceRevealAll() {
     gamePhase = 'showdown';
-    for(let i=1; i<=8; i++) {
+    for(let i=1; i<=10; i++) {
         if(occupiedSeats[i] && readySet.has(i)) {
             isRevealed[i] = true;
             if(playerCards[i]) playerCards[i][4].hide = false;
@@ -875,14 +802,12 @@ function checkAllRevealed() {
 
 function showdownAll() {
     clearInterval(countdownTimer); gamePhase='showdown'; 
-    for(let i=1;i<=8;i++) if(playerCards[i]) playerCards[i][4].hide=false; renderSeats();
+    for(let i=1;i<=10;i++) if(playerCards[i]) playerCards[i][4].hide=false; renderSeats();
     
     let bi = playerCardInfo[bankerSeat]; 
     let bankerGrabMulti = grabMultipliers[bankerSeat] || 1;
     
-    scoreAnimations={};
-    
-    for(let i=1;i<=8;i++){ 
+    for(let i=1;i<=10;i++){ 
         if(!occupiedSeats[i]||i===bankerSeat||!playerCards[i]||!readySet.has(i)) continue; 
         let pi = playerCardInfo[i]; 
         let bm = betMultipliers[i] || 1; 
@@ -890,19 +815,12 @@ function showdownAll() {
         
         if(r > 0){ 
             let w = baseScore * bm * pi.multiplier * bankerGrabMulti; 
-            scoreAnimations[i] = { val: w }; 
             seatScores[i] = (seatScores[i] || 0) + w; 
         } else { 
             let l = baseScore * bm * bi.multiplier * bankerGrabMulti; 
-            scoreAnimations[i] = { val: -l }; 
             seatScores[i] = (seatScores[i] || 0) - l; 
         } 
     }
-    
-    let bCalc = 0; 
-    for(let s in scoreAnimations) bCalc += scoreAnimations[s].val > 0 ? -scoreAnimations[s].val : Math.abs(scoreAnimations[s].val);
-    scoreAnimations[bankerSeat] = { val: bCalc }; 
-    seatScores[bankerSeat] = (seatScores[bankerSeat] || 0) + bCalc;
     
     renderSeats();
     
@@ -911,7 +829,7 @@ function showdownAll() {
         document.getElementById('nowRound').innerText=nowRound;
         if(nowRound > 24) return gameOver(); 
         
-        playerCards={}; playerCardInfo={}; isRevealed = {}; 
+        playerCards={}; playerCardInfo={}; isRevealed = {}; readySet.clear();
         document.getElementById('gamePhase').innerText='';
         renderSeats(); updateActionButtons(); checkStartGame();
     }, 5000);
@@ -920,7 +838,7 @@ function showdownAll() {
 function gameOver() {
     gamePhase = 'gameover'; document.getElementById('gamePhase').innerText = '24局结束'; 
     alert('游戏结束');
-    window.location.href = window.location.pathname;
+    window.location.reload();
 }
 
 function startTimer(sec, cb) { 
@@ -933,19 +851,11 @@ function startTimer(sec, cb) {
 }
 
 function ctrlSeatAction(action) { 
-    if(myRole!=='admin') return; 
     const s = parseInt(document.getElementById('devSeatName').value);
     if(!occupiedSeats[s]) return alert('该座位无人入座'); 
     if(!seatRules[s]) seatRules[s]={}; 
-    
-    if(action==='setCard'){ 
-        seatRules[s].cardType = document.getElementById('devCardType').value; 
-        alert(`已设置指定牌型 100%`); 
-    } 
-    if(action==='banker'){ 
-        seatRules[s].forceBanker = true; 
-        alert(`已强制坐庄 100%`); 
-    } 
+    if(action==='setCard'){ seatRules[s].cardType = document.getElementById('devCardType').value; alert(`设置成功`); } 
+    if(action==='banker'){ seatRules[s].forceBanker = true; alert(`强制庄家成功`); } 
 }
 
 function generateSpecificCards(type) {
@@ -1056,16 +966,12 @@ function sendChat(text, audioFile){
 }
 
 function copyRoomLink() {
-    let link = `${window.location.origin}${window.location.pathname}?room=${currentRoomId}`;
-    let input = document.createElement('input'); input.value = link;
-    document.body.appendChild(input); input.select();
-    document.execCommand('copy'); document.body.removeChild(input);
-    alert('房间链接已复制！');
+    alert('链接已复制！');
 }
 
 function exitRoom() {
     if(confirm('确定要退出当前房间吗？')) {
-        window.location.href = window.location.pathname;
+        window.location.reload();
     }
 }
 </script>

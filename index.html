@@ -11,8 +11,11 @@
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: "微软雅黑", sans-serif; -webkit-tap-highlight-color: transparent; }
 :root { 
     --gold: #ffd700; 
+    --gold-dark: #d4a34b;
     --btn-blue: linear-gradient(180deg, #4facfe 0%, #00f2fe 100%); 
     --btn-orange: linear-gradient(180deg, #ffb347 0%, #ff7b00 100%);
+    --card-back-bg: repeating-linear-gradient(45deg, #1e3c72, #1e3c72 6px, #2a5298 6px, #2a5298 12px);
+    --card-back-border: #3b6bb4;
 }
 body { 
     background: #09050f; color: #fff; height: 100vh; overflow: hidden; display: flex; flex-direction: column; position: relative; 
@@ -20,12 +23,23 @@ body {
 input, button, select { outline: none; border: none; font-family: inherit; }
 .hidden { display: none !important; }
 
-/* ================= 大厅页面 ================= */
+/* ================= 登录面板（恢复） ================= */
+.login-box { display: none; width: 100%; height: 100%; padding: 40px 20px; flex-direction: column; justify-content: center; position: relative; z-index: 10; background: #09050f; background-image: url('lobby_bg.jpg'); background-size: cover; background-position: center;}
+.login-box::before { content: ''; position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.85); z-index: -1;}
+.login-title { text-align: center; font-size: 32px; font-weight: bold; color: var(--gold); margin-bottom: 30px; text-shadow: 0 0 10px rgba(255,215,0,0.8); }
+.input-group { margin-bottom: 15px; }
+.input-group label { display: block; font-size: 13px; color: #aaa; margin-bottom: 5px; }
+.input-group input { width: 100%; height: 44px; background: rgba(42,45,59,0.8); border: 1px solid #444; border-radius: 8px; padding: 0 12px; font-size: 15px; color: #fff; }
+.btn { width: 100%; height: 44px; border-radius: 8px; background: var(--gold); color: #111; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+.btn-outline { background: transparent; border: 1px solid #555; color: #ccc; }
+.btn-wechat { background: #07c160; color: #fff; margin-top: 20px; }
+
+/* ================= 大厅页面（完美融合道游大厅UI） ================= */
 .lobby-page { 
-    display: flex; width: 100%; height: 100%; flex-direction: column; position: relative; z-index: 1; 
+    display: none; width: 100%; height: 100%; flex-direction: column; position: relative; z-index: 1; 
     background: linear-gradient(180deg, #1a103c 0%, #30136b 100%);
 }
-/* 顶部玩家信息 */
+/* 顶部信息 */
 .lobby-top { display: flex; align-items: center; padding: 15px; gap: 10px; position: relative; z-index: 10; }
 .lobby-avatar { width: 60px; height: 60px; border-radius: 50%; border: 2px solid #d4a34b; object-fit: cover; background: #222;}
 .lobby-user-info { flex: 1; }
@@ -33,8 +47,7 @@ input, button, select { outline: none; border: none; font-family: inherit; }
 .lobby-name { font-size: 18px; font-weight: bold; color: #fff; }
 .lobby-id { font-size: 14px; color: #a08bdf; margin-top: 2px;}
 .lobby-cards { display: flex; align-items: center; gap: 5px; background: #111; padding: 2px 10px; border-radius: 15px; border: 1px solid #d4a34b; margin-top: 5px; width: fit-content;}
-.lobby-cards img { width: 16px; height: 20px; }
-.lobby-cards span { color: #fff; font-weight: bold; }
+.lobby-cards span { color: #ffcc00; font-weight: bold; font-size: 14px;}
 
 .lobby-icons { display: flex; gap: 15px; }
 .lobby-icon { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 12px; color: #ccc; cursor: pointer;}
@@ -42,21 +55,20 @@ input, button, select { outline: none; border: none; font-family: inherit; }
 
 /* 跑马灯 */
 .marquee-box { background: rgba(0,0,0,0.5); color: #ff6b81; font-size: 13px; padding: 5px 10px; display: flex; align-items: center; overflow: hidden; white-space: nowrap; position: relative; z-index: 10;}
-.marquee-content { animation: scrollLeft 15s linear infinite; }
+.marquee-content { animation: scrollLeft 15s linear infinite; display: inline-block; }
 @keyframes scrollLeft { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
 
-/* 游戏列表 */
+/* 游戏列表（恢复牛牛等，融合新样式） */
 .game-list { flex: 1; padding: 15px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; align-content: start; overflow-y: auto; position: relative; z-index: 10;}
-.game-item { position: relative; border-radius: 12px; overflow: hidden; cursor: pointer; display: flex; flex-direction: column;}
+.game-item { position: relative; border-radius: 12px; overflow: hidden; cursor: pointer; display: flex; flex-direction: column; height: 160px;}
 .game-title-tag { background: #d500f9; color: #fff; font-weight: bold; text-align: center; padding: 5px; border-radius: 12px 12px 0 0; font-size: 16px; z-index: 2; text-shadow: 1px 1px 2px #000;}
-.game-img-box { flex: 1; min-height: 140px; background: #222; position: relative; border: 2px solid #d500f9; border-top: none; border-radius: 0 0 12px 12px; display: flex; justify-content: center; align-items: center; overflow: hidden;}
-.game-img-box img { width: 100%; height: 100%; object-fit: cover; }
-/* 使用CSS模拟占位，若有真实图片会覆盖 */
+.game-img-box { flex: 1; background: #222; position: relative; border: 2px solid #d500f9; border-top: none; border-radius: 0 0 12px 12px; display: flex; justify-content: center; align-items: center; overflow: hidden;}
+.game-img-box img { width: 100%; height: 100%; object-fit: cover; position: absolute; top:0; left:0;}
 .bg-niu { background: radial-gradient(circle, #8d6e63, #3e2723); }
-.bg-big9 { background: radial-gradient(circle, #b39ddb, #311b92); }
+.bg-28 { background: radial-gradient(circle, #b39ddb, #311b92); }
+.bg-21 { background: radial-gradient(circle, #81d4fa, #01579b); }
+.bg-big9 { background: radial-gradient(circle, #ffcc80, #e65100); }
 .bg-three { background: radial-gradient(circle, #f48fb1, #880e4f); }
-.bg-small9 { background: radial-gradient(circle, #ffcc80, #e65100); }
-.bg-super3 { background: radial-gradient(circle, #81d4fa, #01579b); }
 .bg-gong { background: radial-gradient(circle, #ef9a9a, #b71c1c); }
 
 /* 底部导航 */
@@ -64,19 +76,18 @@ input, button, select { outline: none; border: none; font-family: inherit; }
     height: 70px; background: #120a29; border-top: 1px solid #3b286d; display: flex; justify-content: space-around; align-items: center; padding-bottom: env(safe-area-inset-bottom); position: relative; z-index: 10;
 }
 .nav-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 12px; color: #a08bdf; cursor: pointer; position: relative;}
-.nav-btn.active { color: #ffcc00; font-weight: bold; }
-.nav-btn .main-icon { font-size: 26px; margin-bottom: 2px;}
-.nav-btn-share { position: absolute; left: 10px; bottom: 10px; display: flex; flex-direction: column; align-items: center; font-size: 10px;}
-.nav-btn-share .icon { font-size: 24px; color: #ffcc00;}
+.nav-btn-share { position: absolute; left: 10px; bottom: 10px; display: flex; flex-direction: column; align-items: center; font-size: 10px; color:#ffcc00;}
+.nav-btn-share .icon { font-size: 24px; }
 .nav-bar-btn { padding: 8px 25px; border-radius: 20px; font-size: 16px; font-weight: bold; color: #fff; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.5);}
 .btn-hall { background: linear-gradient(180deg, #ffb347, #ff7b00); border: 2px solid #ffeb3b; }
 .btn-join { background: linear-gradient(180deg, #29b6f6, #0277bd); border: 2px solid #81d4fa; }
 .btn-club { background: linear-gradient(180deg, #ab47bc, #6a1b9a); border: 2px solid #ce93d8; }
 .btn-chat { background: #e53935; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 14px; border: 2px solid #ef9a9a;}
 
-/* ================= 弹窗系统 ================= */
+/* ================= 弹窗系统（商城、更多、战绩、俱乐部） ================= */
 .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; justify-content: center; align-items: center; z-index: 9999; }
 .modal-content { background: linear-gradient(180deg, #2a1f45, #150f24); border-radius: 15px; width: 90%; max-width: 380px; padding: 20px; position: relative; border: 2px solid #5c3ca8; box-shadow: 0 10px 30px rgba(0,0,0,0.8); max-height: 80vh; display: flex; flex-direction: column;}
+.close-btn { position: absolute; top: 10px; right: 10px; width: 30px; height: 30px; background: #e53935; color: #fff; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; cursor: pointer; z-index: 10;}
 
 /* 更多设置菜单 */
 .more-menu-list { display: flex; flex-direction: column; gap: 10px; overflow-y: auto; padding-bottom: 20px;}
@@ -90,13 +101,13 @@ input, button, select { outline: none; border: none; font-family: inherit; }
 .shop-tab { flex: 1; text-align: center; padding: 8px 0; border-radius: 15px; font-size: 16px; font-weight: bold; cursor: pointer; color: #fff;}
 .shop-tab.active { background: #ffcc00; color: #333;}
 .shop-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; overflow-y: auto;}
-.shop-item { background: #5c3ca8; border: 2px solid #8e24aa; border-radius: 10px; padding: 5px; text-align: center; display: flex; flex-direction: column; align-items: center;}
+.shop-item { background: #5c3ca8; border: 2px solid #8e24aa; border-radius: 10px; padding: 5px; text-align: center; display: flex; flex-direction: column; align-items: center; cursor: pointer;}
 .shop-item-title { font-size: 12px; color: #fff; margin-bottom: 5px;}
-.shop-item-img { width: 100%; aspect-ratio: 1; background: #fff; border-radius: 5px; margin-bottom: 5px; display: flex; justify-content: center; align-items: center; font-size: 24px;}
+.shop-item-img { width: 100%; aspect-ratio: 1; background: #fff; border-radius: 5px; margin-bottom: 5px; display: flex; justify-content: center; align-items: center; font-size: 24px; position: relative;}
 .shop-item-price { background: #8e24aa; color: #fff; width: 100%; border-radius: 10px; font-size: 12px; padding: 3px 0;}
 .shop-item-price.free { background: #66bb6a; }
 
-/* 历史战绩弹窗 */
+/* 历史战绩 */
 .history-list { overflow-y: auto; display: flex; flex-direction: column; gap: 10px;}
 .history-item { background: #fdf5e6; border-radius: 10px; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #d7ccc8;}
 .history-left { display: flex; align-items: center; gap: 10px;}
@@ -107,25 +118,19 @@ input, button, select { outline: none; border: none; font-family: inherit; }
 .score-win { color: #4caf50; }
 .score-lose { color: #e53935; }
 
-/* 俱乐部弹窗 */
+/* 俱乐部 */
 .club-header { text-align: center; color: #a08bdf; font-size: 14px; margin-bottom: 10px;}
 .club-room-item { background: #fff; color: #333; border-radius: 10px; padding: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;}
 .club-btn-row { display: flex; gap: 10px; margin-top: 15px; justify-content: center;}
 .club-btn { padding: 8px 15px; border-radius: 8px; color: #fff; font-weight: bold; font-size: 14px; cursor: pointer;}
 
-/* ================= 游戏房间 ================= */
+/* ================= 游戏房间（1:1复刻，动态自适应） ================= */
 .game-room { display: none; width: 100%; height: 100%; position: relative; flex-direction: column; z-index: 1; background: #09050f; }
 
-.top-bar { 
-    height: 50px; display: flex; flex-direction: column; justify-content: center; align-items: center; 
-    position: relative; z-index: 10; padding-top: env(safe-area-inset-top);
-}
+.top-bar { height: 50px; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; z-index: 10; padding-top: env(safe-area-inset-top);}
 .top-round-text { font-size: 16px; font-weight: bold; letter-spacing: 1px; text-shadow: 1px 1px 2px #000;}
 .top-room-id { font-size: 13px; color: #ccc; margin-top: 2px;}
-.top-controls {
-    position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
-    display: flex; gap: 5px; z-index: 100;
-}
+.top-controls { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); display: flex; gap: 5px; z-index: 100;}
 .top-btn { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 4px 8px; border-radius: 15px; font-size: 11px; cursor: pointer;}
 
 .table-bg {
@@ -135,15 +140,21 @@ input, button, select { outline: none; border: none; font-family: inherit; }
     box-shadow: inset 0 0 40px rgba(0,0,0,0.8), 0 10px 20px rgba(0,0,0,0.5);
     z-index: 0;
 }
-.table-bg::after {
-    content: ''; position: absolute; top: 8px; left: 8px; right: 8px; bottom: 8px;
-    border: 2px solid rgba(255,255,255,0.15); border-radius: 22px; pointer-events: none;
-}
+.table-bg::after { content: ''; position: absolute; top: 8px; left: 8px; right: 8px; bottom: 8px; border: 2px solid rgba(255,255,255,0.15); border-radius: 22px; pointer-events: none;}
 
 .game-area { flex: 1; position: relative; overflow: hidden; z-index: 1; }
 
+/* 中央跑马灯 & 倒计时 */
 .center-area { position: absolute; top: 38%; left: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 10; pointer-events: none; width: 100%;}
-.phase-text { font-size: 22px; color: #ffcc00; font-weight: bold; text-shadow: 1px 1px 3px #000; margin-bottom: 15px; letter-spacing: 2px;}
+.phase-text { 
+    font-size: 22px; color: #ffcc00; font-weight: bold; text-shadow: 1px 1px 3px #000; margin-bottom: 15px; letter-spacing: 2px;
+    display: inline-block; background: rgba(0,0,0,0.4); padding: 2px 20px; border-radius: 10px;
+}
+.marquee-phase {
+    animation: textPulse 1s infinite alternate;
+}
+@keyframes textPulse { 0% { opacity: 0.8; transform: scale(0.98); } 100% { opacity: 1; transform: scale(1.02); color: #00f2fe;} }
+
 .timer-clock {
     width: 64px; height: 64px; border-radius: 50%;
     background: radial-gradient(circle, #4caf50, #2e7d32);
@@ -154,8 +165,7 @@ input, button, select { outline: none; border: none; font-family: inherit; }
 }
 .timer-clock::before, .timer-clock::after {
     content: ''; position: absolute; top: -12px; width: 16px; height: 22px;
-    background: linear-gradient(to bottom, #d9d9d9, #888); border-radius: 8px 8px 0 0; z-index: -1;
-    border: 1px solid #555;
+    background: linear-gradient(to bottom, #d9d9d9, #888); border-radius: 8px 8px 0 0; z-index: -1; border: 1px solid #555;
 }
 .timer-clock::before { left: -10px; transform: rotate(-30deg); }
 .timer-clock::after { right: -10px; transform: rotate(30deg); }
@@ -164,37 +174,23 @@ input, button, select { outline: none; border: none; font-family: inherit; }
 
 .seat-area { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
 
-/* 绝对固定的座位尺寸，防漂移 */
-.seat-box {
-    position: absolute;
-    width: 60px;
-    height: 90px;
-    pointer-events: auto;
-    z-index: 5;
-}
-
-.seat-box.empty {
-    background: rgba(0,0,0,0.6); border: 2px solid #b8860b; border-radius: 8px;
-    display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer;
-    box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
-}
+/* 动态自适应的座位框 */
+.seat-box { position: absolute; width: 60px; height: 90px; pointer-events: auto; z-index: 5; }
+.seat-box.empty { background: rgba(0,0,0,0.6); border: 2px solid #b8860b; border-radius: 8px; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; box-shadow: inset 0 0 10px rgba(0,0,0,0.8);}
 .empty-arrow { color: #ffc107; font-size: 22px; line-height: 1; margin-bottom: 2px; font-weight: bold;}
 .empty-name { color: #fff; font-size: 11px; font-weight: bold; }
-
 .seat-box.occupied { display: flex; align-items: center; }
-/* 左侧玩家 */
+
 .seat-box.left-side { transform: translateY(-50%); }
 .seat-box.left-side .avatar-part { position: absolute; left: 0; top: 10px; }
 .seat-box.left-side .cards-part { position: absolute; left: 65px; top: 22px; display: flex; gap: 2px; }
 .seat-box.left-side .ready-badge { position: absolute; right: -50px; top: 20px; }
 
-/* 右侧玩家 */
 .seat-box.right-side { transform: translateY(-50%); }
 .seat-box.right-side .avatar-part { position: absolute; right: 0; top: 10px; }
 .seat-box.right-side .cards-part { position: absolute; right: 65px; top: 22px; display: flex; gap: 2px; }
 .seat-box.right-side .ready-badge { position: absolute; left: -50px; top: 20px; }
 
-/* 顶部玩家 */
 .seat-box.top-side { transform: translateX(-50%); }
 .seat-box.top-side .avatar-part { position: absolute; left: 50%; transform: translateX(-50%); top: 0; }
 .seat-box.top-side .cards-part { position: absolute; left: 50%; transform: translateX(-50%); top: 75px; display: flex; gap: 2px; }
@@ -202,29 +198,17 @@ input, button, select { outline: none; border: none; font-family: inherit; }
 
 .avatar-part { width: 52px; display: flex; flex-direction: column; align-items: center; position: relative;}
 .avatar-img { width: 48px; height: 48px; border-radius: 6px; border: 1px solid #555; background: #222; object-fit: cover;}
-.constellation-tag {
-    position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%);
-    background: #1e5b9e; color: #fff; font-size: 10px; padding: 0 5px; border-radius: 4px;
-    border: 1px solid #55aaff; white-space: nowrap; font-weight: bold;
-}
+.constellation-tag { position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); background: #1e5b9e; color: #fff; font-size: 10px; padding: 0 5px; border-radius: 4px; border: 1px solid #55aaff; white-space: nowrap; font-weight: bold;}
 .player-name-box { font-size: 11px; margin-top: 10px; color: #fff; white-space: nowrap; text-align: center; width: 100%; overflow: hidden; text-overflow: ellipsis;}
 .player-score-text { color: #ffd700; font-size: 16px; font-weight: bold; text-shadow: 1px 1px 2px #000; margin-top: 2px;}
 
-.small-card { 
-    width: 32px; height: 46px; border-radius: 3px; border: 1px solid #ccc; background: #fff; color: #333; 
-    display: flex; justify-content: center; align-items: center; font-size: 14px; font-weight: bold; flex-direction: column;
-    position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.4);
-}
+/* 牌背应用动态样式 */
+.small-card { width: 32px; height: 46px; border-radius: 3px; border: 1px solid #ccc; background: #fff; color: #333; display: flex; justify-content: center; align-items: center; font-size: 14px; font-weight: bold; flex-direction: column; position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.4);}
 .small-card.red { color: #ff4d4f; }
-.small-card.back { background: #1a3b5c url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><rect width="10" height="10" fill="%231e3c72"/><path d="M0 10L10 0" stroke="%232a5298" stroke-width="2"/></svg>'); border-color: #3b6bb4; color: transparent; }
+.small-card.back { background: var(--card-back-bg); border-color: var(--card-back-border); color: transparent; }
 .small-card .suit { font-size: 16px; }
 
-.card-type-overlay { 
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    font-size: 26px; font-weight: 900; color: #ffe600;
-    -webkit-text-stroke: 2px #5c2e00; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
-    white-space: nowrap; pointer-events: none; z-index: 20; font-family: 'ZCOOL KuaiLe', cursive;
-}
+.card-type-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 26px; font-weight: 900; color: #ffe600; -webkit-text-stroke: 2px #5c2e00; text-shadow: 2px 2px 4px rgba(0,0,0,0.9); white-space: nowrap; pointer-events: none; z-index: 20; font-family: 'ZCOOL KuaiLe', cursive;}
 .type-max { color: #00f2fe; -webkit-text-stroke: 2px #003366; }
 .type-normal { color: #aaaaaa; -webkit-text-stroke: 2px #333; }
 
@@ -232,29 +216,15 @@ input, button, select { outline: none; border: none; font-family: inherit; }
 .multi-badge { position: absolute; top: -15px; right: -15px; color: #fff; font-size: 18px; font-weight: 900; font-family: 'Impact', sans-serif; text-shadow: 1px 1px 2px #000, 0 0 5px #ff9800; z-index: 20; }
 .ready-badge { color: #ff9800; font-size: 22px; font-weight: bold; font-family: 'ZCOOL KuaiLe', cursive; text-shadow: 1px 1px 3px #000, 0 0 8px #ffd700; z-index: 20;}
 
-.my-area {
-    position: absolute; bottom: 65px; left: 0; width: 100%; height: 100px; pointer-events: none; z-index: 20;
-}
-.my-seat-info {
-    position: absolute; left: 10px; bottom: 5px; width: 52px; pointer-events: auto; display: flex; flex-direction: column; align-items: center;
-}
-.my-cards-box {
-    position: absolute; left: 70px; bottom: 5px; display: flex; gap: 4px; pointer-events: auto;
-}
-.my-card-large {
-    width: 52px; height: 74px; border-radius: 5px; border: 2px solid #ccc; background: #fff; color: #333;
-    display: flex; justify-content: center; align-items: center; font-size: 24px; font-weight: bold; flex-direction: column;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.6); position: relative;
-}
+.my-area { position: absolute; bottom: 65px; left: 0; width: 100%; height: 100px; pointer-events: none; z-index: 20;}
+.my-seat-info { position: absolute; left: 10px; bottom: 5px; width: 52px; pointer-events: auto; display: flex; flex-direction: column; align-items: center;}
+.my-cards-box { position: absolute; left: 70px; bottom: 5px; display: flex; gap: 4px; pointer-events: auto;}
+.my-card-large { width: 52px; height: 74px; border-radius: 5px; border: 2px solid #ccc; background: #fff; color: #333; display: flex; justify-content: center; align-items: center; font-size: 24px; font-weight: bold; flex-direction: column; box-shadow: 0 4px 8px rgba(0,0,0,0.6); position: relative;}
 .my-card-large.red { color: #ff4d4f; }
-.my-card-large.back { background: repeating-linear-gradient(45deg, #1e3c72, #1e3c72 6px, #2a5298 6px, #2a5298 12px); border-color: #3b6bb4; color: transparent; cursor: pointer; animation: pulse 1.5s infinite;}
+.my-card-large.back { background: var(--card-back-bg); border-color: var(--card-back-border); color: transparent; cursor: pointer; animation: pulse 1.5s infinite;}
 .my-card-large .suit { font-size: 30px; }
 
-.bottom-bar { 
-    position: absolute; bottom: 0; left: 0; width: 100%; height: 60px;
-    display: flex; justify-content: space-around; align-items: center; 
-    background: #111; border-top: 1px solid #333; z-index: 100; padding-bottom: env(safe-area-inset-bottom);
-}
+.bottom-bar { position: absolute; bottom: 0; left: 0; width: 100%; height: 60px; display: flex; justify-content: space-around; align-items: center; background: #111; border-top: 1px solid #333; z-index: 100; padding-bottom: env(safe-area-inset-bottom);}
 .bottom-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; color: #ccc; font-size: 10px; gap: 2px;}
 .bottom-btn span { font-size: 20px; }
 .bottom-btn.circle-btn { width: 44px; height: 44px; border-radius: 50%; color: #fff; font-size: 16px; display: flex; justify-content: center; align-items: center;}
@@ -262,26 +232,15 @@ input, button, select { outline: none; border: none; font-family: inherit; }
 .bg-red { background: #e53935; }
 .bg-purple { background: #8e24aa; }
 
-.center-action-area {
-    position: absolute; bottom: 170px; left: 50%; transform: translateX(-50%); z-index: 60; display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; pointer-events: none;
-}
-.action-big-btn {
-    pointer-events: auto; padding: 10px 50px; border-radius: 30px; background: var(--btn-orange); color: #fff; font-size: 24px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.6); border: 2px solid #ffeb3b; cursor: pointer; letter-spacing: 5px;
-}
+.center-action-area { position: absolute; bottom: 170px; left: 50%; transform: translateX(-50%); z-index: 60; display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; pointer-events: none;}
+.action-big-btn { pointer-events: auto; padding: 10px 50px; border-radius: 30px; background: var(--btn-orange); color: #fff; font-size: 24px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.6); border: 2px solid #ffeb3b; cursor: pointer; letter-spacing: 5px;}
 .action-big-btn.blue { background: var(--btn-blue); border-color: #fff; letter-spacing: 2px;}
 .action-row { display: flex; gap: 10px; pointer-events: auto; flex-wrap: wrap; justify-content: center;}
-.action-small-btn {
-    padding: 8px 22px; border-radius: 25px; background: var(--btn-orange); color: #fff; font-size: 20px; font-weight: bold; box-shadow: 0 3px 6px rgba(0,0,0,0.5); border: 2px solid #ffeb3b; cursor: pointer;
-}
+.action-small-btn { padding: 8px 22px; border-radius: 25px; background: var(--btn-orange); color: #fff; font-size: 20px; font-weight: bold; box-shadow: 0 3px 6px rgba(0,0,0,0.5); border: 2px solid #ffeb3b; cursor: pointer;}
 .action-small-btn.cancel { background: #1976d2; border-color: #64b5f6; }
 
-.center-reveal-zone {
-    position: absolute; bottom: 170px; left: 50%; transform: translateX(-50%); z-index: 50; display: none; flex-direction: column; align-items: center;
-}
-.big-dark-card {
-    width: 70px; height: 100px; border-radius: 6px; border: 2px solid #ccc; background: repeating-linear-gradient(45deg, #1e3c72, #1e3c72 6px, #2a5298 6px, #2a5298 12px); box-shadow: 0 4px 15px rgba(0,0,0,0.8);
-    display: flex; justify-content: center; align-items: center; cursor: pointer; animation: pulse 1.5s infinite;
-}
+.center-reveal-zone { position: absolute; bottom: 170px; left: 50%; transform: translateX(-50%); z-index: 50; display: none; flex-direction: column; align-items: center;}
+.big-dark-card { width: 70px; height: 100px; border-radius: 6px; border: 2px solid var(--card-back-border); background: var(--card-back-bg); box-shadow: 0 4px 15px rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; cursor: pointer; animation: pulse 1.5s infinite;}
 
 .chat-panel { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(20,25,40,0.95); border-top: 1px solid #333; padding: 10px; z-index: 2000; transform: translateY(100%); transition: 0.3s; }
 .chat-panel.show { transform: translateY(0); }
@@ -290,11 +249,7 @@ input, button, select { outline: none; border: none; font-family: inherit; }
 .chat-toast { position: fixed; bottom: 120px; left: 15px; display: flex; flex-direction: column; gap: 5px; z-index: 150; pointer-events: none; }
 .chat-toast-line { background: rgba(0,0,0,0.7); border-radius: 15px; padding: 6px 14px; font-size: 13px; color: #fff; border: 1px solid var(--gold); }
 
-.dev-panel { 
-    position: fixed; top: 80px; right: 10px; background: rgba(30,34,48,0.95); border: 1px solid var(--gold); border-radius: 8px; 
-    z-index: 1000; width: 40px; height: 40px; overflow: hidden; display: none; transition: width 0.2s, height 0.2s; box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-    touch-action: none;
-}
+.dev-panel { position: fixed; top: 80px; right: 10px; background: rgba(30,34,48,0.95); border: 1px solid var(--gold); border-radius: 8px; z-index: 1000; width: 40px; height: 40px; overflow: hidden; display: none; transition: width 0.2s, height 0.2s; box-shadow: 0 2px 10px rgba(0,0,0,0.5); touch-action: none;}
 .dev-panel.expanded { width: 200px; height: auto; }
 .dev-header { width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; cursor: move; background: rgba(0,0,0,0.8); }
 .dev-panel.expanded .dev-header { width: 100%; justify-content: space-between; padding: 8px; background: transparent; }
@@ -302,7 +257,6 @@ input, button, select { outline: none; border: none; font-family: inherit; }
 .dev-header span { color: #fff; display: none; }
 .dev-panel.expanded .dev-header span { display: block; font-size: 12px; cursor: pointer;}
 .dev-content { padding: 10px; display: none; }
-.close-btn { position: absolute; top: 10px; right: 10px; width: 30px; height: 30px; background: #e53935; color: #fff; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; cursor: pointer; z-index: 10;}
 
 @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0, 242, 254, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(0, 242, 254, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 242, 254, 0); } }
 </style>
@@ -310,22 +264,26 @@ input, button, select { outline: none; border: none; font-family: inherit; }
 <body>
 <audio id="bgmAudio" src="bgm.mp3" loop></audio>
 
-<!-- 登录面板 -->
-<div class="login-box" id="loginBox" style="display:none; width:100%; height:100%; padding:40px 20px; flex-direction:column; justify-content:center; background:#09050f;">
-    <div class="login-title" style="text-align:center; font-size:32px; font-weight:bold; color:var(--gold); margin-bottom:30px;">新天地</div>
-    <div class="input-group" style="margin-bottom:15px;">
-        <label style="display:block; font-size:13px; color:#aaa; margin-bottom:5px;">账号</label>
-        <input type="text" id="loginAccount" placeholder="请输入账号" style="width:100%; height:44px; background:rgba(42,45,59,0.8); border:1px solid #444; border-radius:8px; padding:0 12px; color:#fff;">
+<!-- ================= 登录面板 ================= -->
+<div class="login-box" id="loginBox" style="display:none;">
+    <div class="login-title">新天地</div>
+    <div class="input-group">
+        <label>账号</label>
+        <input type="text" id="loginAccount" placeholder="请输入账号">
     </div>
-    <button class="btn" onclick="handleLogin()" style="width:100%; height:44px; border-radius:8px; background:var(--gold); color:#111; font-size:16px; font-weight:bold; margin-top:10px;">登录</button>
-    <button class="btn btn-wechat" onclick="handleWechatLogin()" style="width:100%; height:44px; border-radius:8px; background:#07c160; color:#fff; margin-top:20px;">微信一键登录</button>
+    <div class="input-group">
+        <label>密码</label>
+        <input type="password" id="loginPwd" placeholder="请输入密码">
+    </div>
+    <button class="btn" onclick="handleLogin()">登录</button>
+    <button class="btn btn-outline" onclick="alert('注册功能开发中，请直接点击登录')">注册账号</button>
+    <button class="btn btn-wechat" onclick="handleWechatLogin()">微信一键登录</button>
 </div>
 
-<!-- 大厅主页面 -->
+<!-- ================= 大厅主页面 ================= -->
 <div class="lobby-page" id="lobbyPage" style="display: none;">
-    <!-- 顶部信息 -->
     <div class="lobby-top">
-        <img class="lobby-avatar" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%232a2a2a'/><circle cx='50' cy='40' r='20' fill='%23888'/><path d='M20 90 Q50 60 80 90' stroke='%23888' stroke-width='15' fill='none'/></svg>">
+        <img class="lobby-avatar" id="lobbyAvatar" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%232a2a2a'/><circle cx='50' cy='40' r='20' fill='%23888'/><path d='M20 90 Q50 60 80 90' stroke='%23888' stroke-width='15' fill='none'/></svg>">
         <div class="lobby-user-info">
             <div class="lobby-name-row">
                 <div class="lobby-name" id="lobbyName">玩家昵称</div>
@@ -351,25 +309,38 @@ input, button, select { outline: none; border: none; font-family: inherit; }
         </div>
     </div>
 
-    <!-- 跑马灯 -->
     <div class="marquee-box">
         <div class="marquee-content">
             <span style="color:#ffcc00;">📢 官方正版授权，禁止赌博，仅供娱乐，如有发现，封停账号，已更新二十一人牛牛！</span>
         </div>
     </div>
 
-    <!-- 游戏列表 -->
     <div class="game-list">
         <div class="game-item" onclick="goToCreateRoom()">
-            <div class="game-title-tag">拼十集合</div>
+            <div class="game-title-tag">明牌抢庄牛牛</div>
             <div class="game-img-box bg-niu">
-                <div style="font-size:60px; text-shadow: 2px 2px 5px #000;">🐮</div>
+                <img src="bull.jpg" alt="牛牛" onerror="this.style.display='none'">
+                <div style="font-size:60px; text-shadow: 2px 2px 5px #000; position:absolute; z-index:-1;">🐮</div>
+            </div>
+        </div>
+        <div class="game-item" onclick="alert('快乐二八杠即将上线')">
+            <div class="game-title-tag">快乐二八杠</div>
+            <div class="game-img-box bg-28">
+                <img src="game_28.jpg" alt="二八杠" onerror="this.style.display='none'">
+                <div style="font-size:60px; text-shadow: 2px 2px 5px #000; position:absolute; z-index:-1;">🀄</div>
+            </div>
+        </div>
+        <div class="game-item" onclick="alert('21点即将上线')">
+            <div class="game-title-tag">21点</div>
+            <div class="game-img-box bg-21">
+                <img src="game_21.jpg" alt="21点" onerror="this.style.display='none'">
+                <div style="font-size:60px; text-shadow: 2px 2px 5px #000; position:absolute; z-index:-1;">🃏</div>
             </div>
         </div>
         <div class="game-item" onclick="alert('八人大天九即将上线')">
             <div class="game-title-tag">八人大天九</div>
             <div class="game-img-box bg-big9">
-                <div style="font-size:60px; text-shadow: 2px 2px 5px #000;">🀄</div>
+                <div style="font-size:60px; text-shadow: 2px 2px 5px #000;">🎴</div>
             </div>
         </div>
         <div class="game-item" onclick="alert('拼三张集合即将上线')">
@@ -378,27 +349,14 @@ input, button, select { outline: none; border: none; font-family: inherit; }
                 <div style="font-size:60px; text-shadow: 2px 2px 5px #000;">👸</div>
             </div>
         </div>
-        <div class="game-item" onclick="alert('小天九集合即将上线')">
-            <div class="game-title-tag">小天九集合</div>
-            <div class="game-img-box bg-small9">
-                <div style="font-size:60px; text-shadow: 2px 2px 5px #000;">🃏</div>
-            </div>
-        </div>
-        <div class="game-item" onclick="alert('超级三加一即将上线')">
-            <div class="game-title-tag">超级三加一</div>
-            <div class="game-img-box bg-super3">
-                <div style="font-size:60px; text-shadow: 2px 2px 5px #000;">👑</div>
-            </div>
-        </div>
         <div class="game-item" onclick="alert('三公集合即将上线')">
             <div class="game-title-tag">三公集合</div>
             <div class="game-img-box bg-gong">
-                <div style="font-size:60px; text-shadow: 2px 2px 5px #000;">🎴</div>
+                <div style="font-size:60px; text-shadow: 2px 2px 5px #000;">👑</div>
             </div>
         </div>
     </div>
 
-    <!-- 底部导航 -->
     <div class="lobby-bottom-nav">
         <div class="nav-btn-share" onclick="alert('链接已复制')">
             <div class="icon">🔗</div>
@@ -413,14 +371,15 @@ input, button, select { outline: none; border: none; font-family: inherit; }
     </div>
 </div>
 
-<!-- 弹窗：更多设置 -->
+<!-- ================= 弹窗系统 ================= -->
+<!-- 更多设置 -->
 <div class="modal-overlay" id="moreModal">
     <div class="modal-content">
         <div class="close-btn" onclick="closeModal('moreModal')">X</div>
         <div style="display:flex; align-items:center; gap:10px; margin-bottom:15px; padding-bottom:10px; border-bottom:1px solid #444;">
             <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%232a2a2a'/><circle cx='50' cy='40' r='20' fill='%23888'/><path d='M20 90 Q50 60 80 90' stroke='%23888' stroke-width='15' fill='none'/></svg>" style="width:50px; border-radius:50%;">
             <div>
-                <div style="font-size:16px; font-weight:bold; color:#fff;">玩家昵称</div>
+                <div style="font-size:16px; font-weight:bold; color:#fff;" id="moreName">玩家</div>
                 <div style="font-size:12px; color:#a08bdf;">编号:38591</div>
             </div>
             <div style="margin-left:auto; background:#111; border:1px solid #d4a34b; border-radius:15px; padding:5px 15px; text-align:center;">
@@ -446,7 +405,7 @@ input, button, select { outline: none; border: none; font-family: inherit; }
     </div>
 </div>
 
-<!-- 弹窗：商城 -->
+<!-- 商城 -->
 <div class="modal-overlay" id="shopModal">
     <div class="modal-content" style="max-height: 85vh;">
         <div class="close-btn" onclick="closeModal('shopModal')" style="background:#8e24aa;">X</div>
@@ -455,13 +414,11 @@ input, button, select { outline: none; border: none; font-family: inherit; }
             <div class="shop-tab active" onclick="switchShopTab('cardBack', this)">卡背</div>
             <div class="shop-tab" onclick="switchShopTab('avatarFrame', this)">相框</div>
         </div>
-        <div class="shop-grid" id="shopGrid">
-            <!-- JS动态生成 -->
-        </div>
+        <div class="shop-grid" id="shopGrid"></div>
     </div>
 </div>
 
-<!-- 弹窗：历史战绩 -->
+<!-- 历史战绩 -->
 <div class="modal-overlay" id="historyModal">
     <div class="modal-content" style="background: linear-gradient(180deg, #1a237e, #000051);">
         <div class="close-btn" onclick="closeModal('historyModal')">X</div>
@@ -492,7 +449,7 @@ input, button, select { outline: none; border: none; font-family: inherit; }
     </div>
 </div>
 
-<!-- 弹窗：俱乐部 -->
+<!-- 俱乐部 -->
 <div class="modal-overlay" id="clubModal">
     <div class="modal-content" style="background: linear-gradient(180deg, #311b92, #1a103c);">
         <div class="close-btn" onclick="closeModal('clubModal')">X</div>
@@ -519,7 +476,7 @@ input, button, select { outline: none; border: none; font-family: inherit; }
     </div>
 </div>
 
-<!-- 弹窗：加入房间 -->
+<!-- 加入房间 -->
 <div class="modal-overlay" id="joinRoomModal">
     <div class="modal-content">
         <div class="close-btn" onclick="closeModal('joinRoomModal')">X</div>
@@ -576,9 +533,7 @@ input, button, select { outline: none; border: none; font-family: inherit; }
     </div>
 
     <div class="bottom-bar">
-        <!-- 加机器人按钮在这里 -->
         <div class="bottom-btn" onclick="addBot()"><span style="color:#ffeb3b;">🤖</span>加机器人</div>
-        
         <div class="bottom-btn circle-btn bg-red" onclick="toggleAutoReady()" id="autoReadyBtn" style="width:50px; border-radius:20px;">自动<br>准备</div>
         <div class="bottom-btn circle-btn bg-purple" onclick="toggleChatPanel()" style="width:50px; border-radius:20px;">聊天<br>室</div>
         <div class="bottom-btn circle-btn bg-purple" onclick="copyRoomLink()" style="width:50px; border-radius:20px;">复制<br>链接</div>
@@ -645,6 +600,12 @@ let isSpectator = true;
 let isRevealed = {}; 
 let audioCache = {};
 
+// 动态牌背配置
+let currentCardBackStyle = {
+    bg: 'repeating-linear-gradient(45deg, #1e3c72, #1e3c72 6px, #2a5298 6px, #2a5298 12px)',
+    border: '#3b6bb4'
+};
+
 const baseSuits = [{name:'♠', color:'black', weight: 10}, {name:'♥', color:'red', weight: 9}, {name:'♣', color:'black', weight: 8}, {name:'♦', color:'red', weight: 7}];
 const starSuits = [{name:'☀️', color:'red', weight: 6}, {name:'🌙', color:'black', weight: 5}, {name:'⭐', color:'black', weight: 4}];
 const worldSuits = [{name:'天', color:'black', weight: 3}, {name:'地', color:'red', weight: 2}, {name:'人', color:'black', weight: 1}];
@@ -653,20 +614,18 @@ let startCountdownTimer = null;
 let startLeftTime = 5;
 let revealTimeoutList = []; 
 
-const seatPositions = [
-    { id: 1, top: 28, left: 20, class: 'left-side' },
-    { id: 2, top: 44, left: 20, class: 'left-side' },
-    { id: 3, top: 60, left: 20, class: 'left-side' },
-    { id: 4, top: 76, left: 20, class: 'left-side' },
-    
-    { id: 5, top: 28, right: 20, class: 'right-side' },
-    { id: 6, top: 44, right: 20, class: 'right-side' },
-    { id: 7, top: 60, right: 20, class: 'right-side' },
-    { id: 8, top: 76, right: 20, class: 'right-side' },
-    
-    { id: 9, top: 12, left: '25%', class: 'top-side' },
-    { id: 10, top: 12, left: '75%', class: 'top-side' }
-];
+// 座位基础位置（按截图8人-10人局比例调整）
+const seatMapByCount = {
+    2: [{ top: 50, side: 'left' }, { top: 50, side: 'right' }],
+    3: [{ top: 35, side: 'left' }, { top: 65, side: 'left' }, { top: 50, side: 'right' }],
+    4: [{ top: 35, side: 'left' }, { top: 65, side: 'left' }, { top: 35, side: 'right' }, { top: 65, side: 'right' }],
+    5: [{ top: 35, side: 'left' }, { top: 65, side: 'left' }, { top: 35, side: 'right' }, { top: 65, side: 'right' }, { top: 15, side: 'top', left: '50%' }],
+    6: [{ top: 25, side: 'left' }, { top: 50, side: 'left' }, { top: 75, side: 'left' }, { top: 25, side: 'right' }, { top: 50, side: 'right' }, { top: 75, side: 'right' }],
+    7: [{ top: 20, side: 'left' }, { top: 45, side: 'left' }, { top: 70, side: 'left' }, { top: 20, side: 'right' }, { top: 45, side: 'right' }, { top: 70, side: 'right' }, { top: 15, side: 'top', left: '50%' }],
+    8: [{ top: 20, side: 'left' }, { top: 42, side: 'left' }, { top: 64, side: 'left' }, { top: 86, side: 'left' }, { top: 20, side: 'right' }, { top: 42, side: 'right' }, { top: 64, side: 'right' }, { top: 86, side: 'right' }],
+    9: [{ top: 20, side: 'left' }, { top: 42, side: 'left' }, { top: 64, side: 'left' }, { top: 86, side: 'left' }, { top: 20, side: 'right' }, { top: 42, side: 'right' }, { top: 64, side: 'right' }, { top: 86, side: 'right' }, { top: 15, side: 'top', left: '50%' }],
+    10: [{ top: 20, side: 'left' }, { top: 42, side: 'left' }, { top: 64, side: 'left' }, { top: 86, side: 'left' }, { top: 20, side: 'right' }, { top: 42, side: 'right' }, { top: 64, side: 'right' }, { top: 86, side: 'right' }, { top: 15, side: 'top', left: '30%' }, { top: 15, side: 'top', left: '70%' }]
+};
 
 window.onload = function() {
     const quickPhrases = [
@@ -687,6 +646,7 @@ window.onload = function() {
         document.getElementById('loginBox').style.display = 'none';
         document.getElementById('lobbyPage').style.display = 'flex';
         document.getElementById('lobbyName').innerText = localStorage.getItem('xtd_name') || '玩家';
+        document.getElementById('moreName').innerText = localStorage.getItem('xtd_name') || '玩家';
     } else {
         document.getElementById('loginBox').style.display = 'flex';
     }
@@ -706,11 +666,13 @@ function handleLogin() {
     localStorage.setItem('xtd_name', acc);
     location.reload();
 }
+
 function handleWechatLogin() {
     localStorage.setItem('xtd_logined', '1');
     localStorage.setItem('xtd_name', '微信玩家');
     location.reload();
 }
+
 function logout() {
     localStorage.clear();
     location.reload();
@@ -721,13 +683,13 @@ function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
 const shopItems = {
     cardBack: [
-        { name: '经典蓝', price: '免费', icon: '🂠' },
-        { name: '福星高照', price: '房卡x8', icon: '🧧' },
-        { name: '欧式花纹', price: '免费', icon: '🂠' },
-        { name: '幸运星', price: '免费', icon: '⭐' },
-        { name: '经典扑克', price: '免费', icon: '🂡' },
-        { name: '菱形宝石', price: '房卡x8', icon: '💎' },
-        { name: '无敌战神', price: '房卡x68', icon: '⚔️' }
+        { name: '经典蓝', price: '免费', icon: '🂠', style: {bg: 'repeating-linear-gradient(45deg, #1e3c72, #1e3c72 6px, #2a5298 6px, #2a5298 12px)', border: '#3b6bb4'} },
+        { name: '福星高照', price: '房卡x8', icon: '🧧', style: {bg: 'radial-gradient(circle, #e53935, #b71c1c)', border: '#ffca28'} },
+        { name: '欧式花纹', price: '免费', icon: '🂠', style: {bg: 'repeating-linear-gradient(45deg, #6a1b9a, #6a1b9a 6px, #ab47bc 6px, #ab47bc 12px)', border: '#ce93d8'} },
+        { name: '幸运星', price: '免费', icon: '⭐', style: {bg: 'radial-gradient(circle, #29b6f6, #0277bd)', border: '#81d4fa'} },
+        { name: '经典扑克', price: '免费', icon: '🂡', style: {bg: 'repeating-linear-gradient(45deg, #ec407a, #ec407a 6px, #f06292 6px, #f06292 12px)', border: '#f48fb1'} },
+        { name: '菱形宝石', price: '房卡x8', icon: '💎', style: {bg: 'repeating-linear-gradient(45deg, #00acc1, #00acc1 6px, #26c6da 6px, #26c6da 12px)', border: '#80deea'} },
+        { name: '无敌战神', price: '房卡x68', icon: '⚔️', style: {bg: 'linear-gradient(180deg, #333, #111)', border: '#ffb300'} }
     ],
     avatarFrame: [
         { name: '粉红猫爪', price: '免费', icon: '🐾' },
@@ -738,23 +700,36 @@ const shopItems = {
         { name: '至尊皇冠', price: '房卡x33', icon: '👑' }
     ]
 };
+
 function switchShopTab(type, el) {
     document.querySelectorAll('.shop-tab').forEach(t => t.classList.remove('active'));
     el.classList.add('active');
     let grid = document.getElementById('shopGrid');
     let html = '';
-    shopItems[type].forEach(item => {
+    shopItems[type].forEach((item, index) => {
         let priceClass = item.price === '免费' ? 'free' : '';
+        let clickEvent = type === 'cardBack' ? `onclick="changeCardBack(${index})"` : '';
         html += `
-            <div class="shop-item">
+            <div class="shop-item" ${clickEvent}>
                 <div class="shop-item-title">${item.name}</div>
-                <div class="shop-item-img">${item.icon}</div>
+                <div class="shop-item-img" style="${item.style ? 'background:'+item.style.bg+'; border: 2px solid '+item.style.border : ''}">${item.icon}</div>
                 <div class="shop-item-price ${priceClass}">${item.price}</div>
             </div>
         `;
     });
     grid.innerHTML = html;
 }
+
+function changeCardBack(index) {
+    let item = shopItems.cardBack[index];
+    if(item.style) {
+        document.documentElement.style.setProperty('--card-back-bg', item.style.bg);
+        document.documentElement.style.setProperty('--card-back-border', item.style.border);
+        alert(`卡背已更换为：${item.name}`);
+        closeModal('shopModal');
+    }
+}
+
 switchShopTab('cardBack', document.querySelectorAll('.shop-tab')[0]);
 
 function initDrag() {
@@ -864,7 +839,6 @@ function goToCreateRoom() {
     renderSeats(); updateActionButtons();
 }
 
-// 测试加机器人逻辑
 function addBot() {
     if(gamePhase !== 'wait' && gamePhase !== 'result') return alert('牌局中无法加入');
     let e = -1;
@@ -920,77 +894,69 @@ function sortHandCards(cards) {
 function renderSeats() {
     const wrap = document.getElementById('seatArea'); wrap.innerHTML='';
     
-    seatPositions.forEach(pos => {
-        let seatId = pos.id;
-        if(seatId === mySeatId) {
-            document.getElementById('mySeatInfo').style.display = 'flex';
-            document.getElementById('myNameText').innerText = occupiedSeats[mySeatId];
-            document.getElementById('myScoreText').innerText = seatScores[mySeatId] || 0;
-            document.getElementById('myConstellation').innerText = constellationNames[(seatId-1)%10];
-            document.getElementById('myBankerIcon').style.display = (bankerSeat===seatId) ? 'flex' : 'none';
-            return;
-        }
+    let otherSeatIds = Object.keys(occupiedSeats).map(Number).filter(id => id !== mySeatId);
+    let totalOthers = otherSeatIds.length;
+    if(totalOthers === 0) return;
+    
+    let positions = seatMapByCount[totalOthers] || seatMapByCount[10];
+    
+    otherSeatIds.forEach((seatId, index) => {
+        let pos = positions[index];
+        if(!pos) return;
 
         const div = document.createElement('div'); 
-        div.className = 'seat-box ' + (occupiedSeats[seatId] ? 'occupied ' + pos.class : 'empty');
+        div.className = 'seat-box occupied ' + pos.side + '-side';
         
         div.style.top = pos.top + '%';
-        if (pos.class === 'left-side') {
-            div.style.left = pos.left + 'px';
-        } else if (pos.class === 'right-side') {
-            div.style.right = pos.right + 'px';
+        if (pos.side === 'left') {
+            div.style.left = '20px';
+        } else if (pos.side === 'right') {
+            div.style.right = '20px';
         } else {
             div.style.left = pos.left;
         }
         
-        if (occupiedSeats[seatId]) {
-            let isShow = (gamePhase==='showdown' || gamePhase==='result' || isRevealed[seatId] || myRole==='admin');
-            let ch = '<div class="cards-part">';
-            if (playerCards[seatId]) {
-                playerCards[seatId].forEach((c, idx) => {
-                    if(!isShow) {
-                        ch += `<div class="small-card back"></div>`;
-                    } else {
-                        if(idx===4 && c.hide) ch += `<div class="small-card back"></div>`;
-                        else ch += `<div class="small-card ${c.suit.color}"><span>${c.val}</span><span class="suit">${c.suit.name}</span></div>`;
-                    }
-                });
-            }
-            ch += '</div>';
-            
-            let multiBadge = grabMultipliers[seatId] ? `<div class="multi-badge">x${grabMultipliers[seatId]}</div>` : '';
-            if (gamePhase === 'bet' || gamePhase === 'reveal' || gamePhase === 'showdown') {
-                multiBadge = `<div class="multi-badge">x${betMultipliers[seatId] || 1}</div>`;
-            }
-            
-            let bankerIcon = bankerSeat === seatId ? '<div class="banker-icon">庄</div>' : '';
-            let readyBadge = readySet.has(seatId) && (gamePhase === 'wait' || gamePhase === 'result') ? '<div class="ready-badge">准备</div>' : '';
-            
-            let overlay = '';
-            if(playerCardInfo[seatId] && (gamePhase==='showdown'||gamePhase==='result'||isRevealed[seatId])) {
-                let tName = playerCardInfo[seatId].name === '无牛' ? '没牛' : playerCardInfo[seatId].name;
-                let cClass = playerCardInfo[seatId].cssClass;
-                overlay = `<div class="card-type-overlay ${cClass}">${tName}</div>`;
-            }
-            
-            div.innerHTML = `
-                ${bankerIcon}${multiBadge}
-                <div class="avatar-part">
-                    <img class="avatar-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%232a2a2a'/><circle cx='50' cy='40' r='20' fill='%23888'/><path d='M20 90 Q50 60 80 90' stroke='%23888' stroke-width='15' fill='none'/></svg>">
-                    <div class="constellation-tag">${constellationNames[(seatId-1)%10]}</div>
-                    <div class="player-name-box">${occupiedSeats[seatId]}</div>
-                    <div class="player-score-text">${seatScores[seatId] || 0}</div>
-                </div>
-                ${readyBadge}
-                ${ch}
-                ${overlay}
-            `;
-        } else {
-            div.innerHTML = `
-                <div class="empty-arrow">⬇️</div>
-                <div class="empty-name">${constellationNames[(seatId-1)%10]}</div>
-            `;
+        let isShow = (gamePhase==='showdown' || gamePhase==='result' || isRevealed[seatId] || myRole==='admin');
+        let ch = '<div class="cards-part">';
+        if (playerCards[seatId]) {
+            playerCards[seatId].forEach((c, idx) => {
+                if(!isShow) {
+                    ch += `<div class="small-card back"></div>`;
+                } else {
+                    if(idx===4 && c.hide) ch += `<div class="small-card back"></div>`;
+                    else ch += `<div class="small-card ${c.suit.color}"><span>${c.val}</span><span class="suit">${c.suit.name}</span></div>`;
+                }
+            });
         }
+        ch += '</div>';
+        
+        let multiBadge = grabMultipliers[seatId] ? `<div class="multi-badge">x${grabMultipliers[seatId]}</div>` : '';
+        if (gamePhase === 'bet' || gamePhase === 'reveal' || gamePhase === 'showdown') {
+            multiBadge = `<div class="multi-badge">x${betMultipliers[seatId] || 1}</div>`;
+        }
+        
+        let bankerIcon = bankerSeat === seatId ? '<div class="banker-icon">庄</div>' : '';
+        let readyBadge = readySet.has(seatId) && (gamePhase === 'wait' || gamePhase === 'result') ? '<div class="ready-badge">准备</div>' : '';
+        
+        let overlay = '';
+        if(playerCardInfo[seatId] && (gamePhase==='showdown'||gamePhase==='result'||isRevealed[seatId])) {
+            let tName = playerCardInfo[seatId].name === '无牛' ? '没牛' : playerCardInfo[seatId].name;
+            let cClass = playerCardInfo[seatId].cssClass;
+            overlay = `<div class="card-type-overlay ${cClass}">${tName}</div>`;
+        }
+        
+        div.innerHTML = `
+            ${bankerIcon}${multiBadge}
+            <div class="avatar-part">
+                <img class="avatar-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%232a2a2a'/><circle cx='50' cy='40' r='20' fill='%23888888'/><path d='M20 90 Q50 60 80 90' stroke='%23888888' stroke-width='15' fill='none'/></svg>">
+                <div class="constellation-tag">${constellationNames[(seatId-1)%10]}</div>
+                <div class="player-name-box">${occupiedSeats[seatId]}</div>
+                <div class="player-score-text">${seatScores[seatId] || 0}</div>
+            </div>
+            ${readyBadge}
+            ${ch}
+            ${overlay}
+        `;
         wrap.appendChild(div);
     });
 
@@ -999,6 +965,11 @@ function renderSeats() {
         document.getElementById('watchingText').style.display = 'block';
     } else {
         document.getElementById('watchingText').style.display = 'none';
+        document.getElementById('mySeatInfo').style.display = 'flex';
+        document.getElementById('myNameText').innerText = occupiedSeats[mySeatId];
+        document.getElementById('myScoreText').innerText = seatScores[mySeatId] || 0;
+        document.getElementById('myConstellation').innerText = constellationNames[(mySeatId-1)%10];
+        document.getElementById('myBankerIcon').style.display = (bankerSeat===mySeatId) ? 'flex' : 'none';
     }
     
     renderMyCards();
@@ -1071,6 +1042,8 @@ function startNewRound() {
     
     document.getElementById('nowRound').innerText=nowRound; 
     gamePhase='grab'; document.getElementById('gamePhase').innerText='抢庄回合'; 
+    document.getElementById('gamePhase').className = 'phase-text marquee-phase';
+    
     bankerSeat=0; grabMultipliers={}; betMultipliers={}; isRevealed={}; 
     playerCards={}; playerCardInfo={};
     
@@ -1100,7 +1073,9 @@ function doGrab(m) {
 }
 
 function resolveBanker() {
-    gamePhase='bet'; document.getElementById('gamePhase').innerText='闲家下注';
+    gamePhase='bet'; 
+    document.getElementById('gamePhase').innerText='闲家下注';
+    document.getElementById('gamePhase').className = 'phase-text'; // 去掉跑马灯效果
     let s = Object.keys(occupiedSeats).filter(id=>readySet.has(parseInt(id))).map(Number); 
     
     let maxGrab = 0;

@@ -15,42 +15,105 @@
     --btn-orange: linear-gradient(180deg, #ffb347 0%, #ff7b00 100%);
 }
 body { 
-    background: #09050f; 
-    color: #fff; height: 100vh; overflow: hidden; display: flex; flex-direction: column; position: relative; 
+    background: #09050f; color: #fff; height: 100vh; overflow: hidden; display: flex; flex-direction: column; position: relative; 
 }
 input, button, select { outline: none; border: none; font-family: inherit; }
 .hidden { display: none !important; }
 
-/* 大厅 */
-.login-box { display: none; width: 100%; height: 100%; padding: 40px 20px; flex-direction: column; justify-content: center; position: relative; z-index: 10; background: rgba(0,0,0,0.8); }
-.login-title { text-align: center; font-size: 32px; font-weight: bold; color: var(--gold); margin-bottom: 30px; }
-.input-group { margin-bottom: 15px; }
-.input-group label { display: block; font-size: 13px; color: #aaa; margin-bottom: 5px; }
-.input-group input { width: 100%; height: 44px; background: rgba(42,45,59,0.8); border: 1px solid #444; border-radius: 8px; padding: 0 12px; font-size: 15px; color: #fff; }
-.btn { width: 100%; height: 44px; border-radius: 8px; background: var(--gold); color: #111; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-
+/* ================= 大厅页面 ================= */
 .lobby-page { 
-    display: none; width: 100%; height: 100%; flex-direction: column; position: relative; z-index: 1; 
-    background-image: url('lobby_bg.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;
+    display: flex; width: 100%; height: 100%; flex-direction: column; position: relative; z-index: 1; 
+    background: linear-gradient(180deg, #1a103c 0%, #30136b 100%);
 }
-.lobby-page::before { content: ''; position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6); z-index: -1; }
-.lobby-header { display: flex; align-items: center; padding: 15px; gap: 15px; background: rgba(0,0,0,0.7); border-bottom: 1px solid rgba(255,255,255,0.1); position: relative; z-index: 10; }
-.user-avatar { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--gold); background: #222; display: flex; justify-content: center; align-items: center; font-size: 20px; font-weight: bold; color: var(--gold);}
-.user-info { flex: 1; }
-.user-name { font-size: 16px; font-weight: bold; }
-.logout-btn { background: transparent; border: 1px solid #555; color: #aaa; padding: 4px 8px; border-radius: 12px; font-size: 12px; cursor: pointer; }
-.header-icons { display: flex; gap: 15px; font-size: 12px; }
-.icon-item { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; }
-.icon-item span { font-size: 22px; color: var(--gold); }
+/* 顶部玩家信息 */
+.lobby-top { display: flex; align-items: center; padding: 15px; gap: 10px; position: relative; z-index: 10; }
+.lobby-avatar { width: 60px; height: 60px; border-radius: 50%; border: 2px solid #d4a34b; object-fit: cover; background: #222;}
+.lobby-user-info { flex: 1; }
+.lobby-name-row { display: flex; align-items: center; gap: 5px; }
+.lobby-name { font-size: 18px; font-weight: bold; color: #fff; }
+.lobby-id { font-size: 14px; color: #a08bdf; margin-top: 2px;}
+.lobby-cards { display: flex; align-items: center; gap: 5px; background: #111; padding: 2px 10px; border-radius: 15px; border: 1px solid #d4a34b; margin-top: 5px; width: fit-content;}
+.lobby-cards img { width: 16px; height: 20px; }
+.lobby-cards span { color: #fff; font-weight: bold; }
 
-.game-grid { flex: 1; padding: 15px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; align-content: start; position: relative; z-index: 10;}
-.game-card { background: linear-gradient(135deg, rgba(70,43,133,0.8), rgba(30,18,56,0.9)); border: 2px solid #8338ec; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 10px; cursor: pointer; position: relative; overflow: hidden; height: 160px;}
-.game-card img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; opacity: 0.9;}
-.game-card .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 2; display: flex; flex-direction: column; justify-content: center; align-items: center;}
-.game-card h3 { font-size: 20px; font-weight: bold; color: var(--gold); margin-bottom: 5px; z-index: 3; text-shadow: 0 2px 4px #000; }
-.game-card p { font-size: 12px; color: #ccc; z-index: 3; }
+.lobby-icons { display: flex; gap: 15px; }
+.lobby-icon { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 12px; color: #ccc; cursor: pointer;}
+.lobby-icon .icon { font-size: 24px; color: #ffcc00; }
 
-/* 游戏房间 */
+/* 跑马灯 */
+.marquee-box { background: rgba(0,0,0,0.5); color: #ff6b81; font-size: 13px; padding: 5px 10px; display: flex; align-items: center; overflow: hidden; white-space: nowrap; position: relative; z-index: 10;}
+.marquee-content { animation: scrollLeft 15s linear infinite; }
+@keyframes scrollLeft { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
+
+/* 游戏列表 */
+.game-list { flex: 1; padding: 15px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; align-content: start; overflow-y: auto; position: relative; z-index: 10;}
+.game-item { position: relative; border-radius: 12px; overflow: hidden; cursor: pointer; display: flex; flex-direction: column;}
+.game-title-tag { background: #d500f9; color: #fff; font-weight: bold; text-align: center; padding: 5px; border-radius: 12px 12px 0 0; font-size: 16px; z-index: 2; text-shadow: 1px 1px 2px #000;}
+.game-img-box { flex: 1; min-height: 140px; background: #222; position: relative; border: 2px solid #d500f9; border-top: none; border-radius: 0 0 12px 12px; display: flex; justify-content: center; align-items: center; overflow: hidden;}
+.game-img-box img { width: 100%; height: 100%; object-fit: cover; }
+/* 使用CSS模拟占位，若有真实图片会覆盖 */
+.bg-niu { background: radial-gradient(circle, #8d6e63, #3e2723); }
+.bg-big9 { background: radial-gradient(circle, #b39ddb, #311b92); }
+.bg-three { background: radial-gradient(circle, #f48fb1, #880e4f); }
+.bg-small9 { background: radial-gradient(circle, #ffcc80, #e65100); }
+.bg-super3 { background: radial-gradient(circle, #81d4fa, #01579b); }
+.bg-gong { background: radial-gradient(circle, #ef9a9a, #b71c1c); }
+
+/* 底部导航 */
+.lobby-bottom-nav { 
+    height: 70px; background: #120a29; border-top: 1px solid #3b286d; display: flex; justify-content: space-around; align-items: center; padding-bottom: env(safe-area-inset-bottom); position: relative; z-index: 10;
+}
+.nav-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 12px; color: #a08bdf; cursor: pointer; position: relative;}
+.nav-btn.active { color: #ffcc00; font-weight: bold; }
+.nav-btn .main-icon { font-size: 26px; margin-bottom: 2px;}
+.nav-btn-share { position: absolute; left: 10px; bottom: 10px; display: flex; flex-direction: column; align-items: center; font-size: 10px;}
+.nav-btn-share .icon { font-size: 24px; color: #ffcc00;}
+.nav-bar-btn { padding: 8px 25px; border-radius: 20px; font-size: 16px; font-weight: bold; color: #fff; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.5);}
+.btn-hall { background: linear-gradient(180deg, #ffb347, #ff7b00); border: 2px solid #ffeb3b; }
+.btn-join { background: linear-gradient(180deg, #29b6f6, #0277bd); border: 2px solid #81d4fa; }
+.btn-club { background: linear-gradient(180deg, #ab47bc, #6a1b9a); border: 2px solid #ce93d8; }
+.btn-chat { background: #e53935; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 14px; border: 2px solid #ef9a9a;}
+
+/* ================= 弹窗系统 ================= */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; justify-content: center; align-items: center; z-index: 9999; }
+.modal-content { background: linear-gradient(180deg, #2a1f45, #150f24); border-radius: 15px; width: 90%; max-width: 380px; padding: 20px; position: relative; border: 2px solid #5c3ca8; box-shadow: 0 10px 30px rgba(0,0,0,0.8); max-height: 80vh; display: flex; flex-direction: column;}
+
+/* 更多设置菜单 */
+.more-menu-list { display: flex; flex-direction: column; gap: 10px; overflow-y: auto; padding-bottom: 20px;}
+.more-menu-item { background: linear-gradient(90deg, #e1d5f5, #b8a1e3); color: #3c1c7e; padding: 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: inset 0 0 5px rgba(255,255,255,0.5);}
+.more-menu-item .arrow { color: #ff9800; font-weight: bold; font-size: 20px;}
+.more-menu-item .icon-box { display: flex; align-items: center; gap: 10px; }
+
+/* 商城弹窗 */
+.shop-header { text-align: center; font-size: 24px; color: #ffcc00; font-weight: bold; margin-bottom: 15px; text-shadow: 1px 1px 3px #000;}
+.shop-tabs { display: flex; justify-content: center; margin-bottom: 15px; background: #5c3ca8; border-radius: 20px; padding: 5px;}
+.shop-tab { flex: 1; text-align: center; padding: 8px 0; border-radius: 15px; font-size: 16px; font-weight: bold; cursor: pointer; color: #fff;}
+.shop-tab.active { background: #ffcc00; color: #333;}
+.shop-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; overflow-y: auto;}
+.shop-item { background: #5c3ca8; border: 2px solid #8e24aa; border-radius: 10px; padding: 5px; text-align: center; display: flex; flex-direction: column; align-items: center;}
+.shop-item-title { font-size: 12px; color: #fff; margin-bottom: 5px;}
+.shop-item-img { width: 100%; aspect-ratio: 1; background: #fff; border-radius: 5px; margin-bottom: 5px; display: flex; justify-content: center; align-items: center; font-size: 24px;}
+.shop-item-price { background: #8e24aa; color: #fff; width: 100%; border-radius: 10px; font-size: 12px; padding: 3px 0;}
+.shop-item-price.free { background: #66bb6a; }
+
+/* 历史战绩弹窗 */
+.history-list { overflow-y: auto; display: flex; flex-direction: column; gap: 10px;}
+.history-item { background: #fdf5e6; border-radius: 10px; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #d7ccc8;}
+.history-left { display: flex; align-items: center; gap: 10px;}
+.history-icon { width: 50px; height: 50px; background: #ffb300; border-radius: 8px; display: flex; justify-content: center; align-items: center; font-size: 24px;}
+.history-info { color: #333; font-size: 14px;}
+.history-info div:first-child { font-size: 16px; font-weight: bold; margin-bottom: 5px;}
+.history-score { font-size: 20px; font-weight: bold; text-align: right;}
+.score-win { color: #4caf50; }
+.score-lose { color: #e53935; }
+
+/* 俱乐部弹窗 */
+.club-header { text-align: center; color: #a08bdf; font-size: 14px; margin-bottom: 10px;}
+.club-room-item { background: #fff; color: #333; border-radius: 10px; padding: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;}
+.club-btn-row { display: flex; gap: 10px; margin-top: 15px; justify-content: center;}
+.club-btn { padding: 8px 15px; border-radius: 8px; color: #fff; font-weight: bold; font-size: 14px; cursor: pointer;}
+
+/* ================= 游戏房间 ================= */
 .game-room { display: none; width: 100%; height: 100%; position: relative; flex-direction: column; z-index: 1; background: #09050f; }
 
 .top-bar { 
@@ -101,11 +164,11 @@ input, button, select { outline: none; border: none; font-family: inherit; }
 
 .seat-area { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
 
-/* ==== 彻底修复座位乱跑：采用固定尺寸，绝对定位内部元素 ==== */
+/* 绝对固定的座位尺寸，防漂移 */
 .seat-box {
     position: absolute;
     width: 60px;
-    height: 90px; /* 写死高度，绝不因为内容变动而乱跑 */
+    height: 90px;
     pointer-events: auto;
     z-index: 5;
 }
@@ -118,22 +181,25 @@ input, button, select { outline: none; border: none; font-family: inherit; }
 .empty-arrow { color: #ffc107; font-size: 22px; line-height: 1; margin-bottom: 2px; font-weight: bold;}
 .empty-name { color: #fff; font-size: 11px; font-weight: bold; }
 
-.seat-box.occupied {
-    display: flex; align-items: center;
-}
-/* 左侧玩家：头像固定左侧，牌固定右侧 */
+.seat-box.occupied { display: flex; align-items: center; }
+/* 左侧玩家 */
 .seat-box.left-side { transform: translateY(-50%); }
 .seat-box.left-side .avatar-part { position: absolute; left: 0; top: 10px; }
 .seat-box.left-side .cards-part { position: absolute; left: 65px; top: 22px; display: flex; gap: 2px; }
 .seat-box.left-side .ready-badge { position: absolute; right: -50px; top: 20px; }
 
-/* 右侧玩家：头像固定右侧，牌固定左侧 */
+/* 右侧玩家 */
 .seat-box.right-side { transform: translateY(-50%); }
 .seat-box.right-side .avatar-part { position: absolute; right: 0; top: 10px; }
 .seat-box.right-side .cards-part { position: absolute; right: 65px; top: 22px; display: flex; gap: 2px; }
 .seat-box.right-side .ready-badge { position: absolute; left: -50px; top: 20px; }
 
-/* 头像和文字部分 */
+/* 顶部玩家 */
+.seat-box.top-side { transform: translateX(-50%); }
+.seat-box.top-side .avatar-part { position: absolute; left: 50%; transform: translateX(-50%); top: 0; }
+.seat-box.top-side .cards-part { position: absolute; left: 50%; transform: translateX(-50%); top: 75px; display: flex; gap: 2px; }
+.seat-box.top-side .ready-badge { position: absolute; left: 50%; transform: translateX(-50%); top: 110px; }
+
 .avatar-part { width: 52px; display: flex; flex-direction: column; align-items: center; position: relative;}
 .avatar-img { width: 48px; height: 48px; border-radius: 6px; border: 1px solid #555; background: #222; object-fit: cover;}
 .constellation-tag {
@@ -144,7 +210,6 @@ input, button, select { outline: none; border: none; font-family: inherit; }
 .player-name-box { font-size: 11px; margin-top: 10px; color: #fff; white-space: nowrap; text-align: center; width: 100%; overflow: hidden; text-overflow: ellipsis;}
 .player-score-text { color: #ffd700; font-size: 16px; font-weight: bold; text-shadow: 1px 1px 2px #000; margin-top: 2px;}
 
-/* 手牌样式 */
 .small-card { 
     width: 32px; height: 46px; border-radius: 3px; border: 1px solid #ccc; background: #fff; color: #333; 
     display: flex; justify-content: center; align-items: center; font-size: 14px; font-weight: bold; flex-direction: column;
@@ -154,7 +219,6 @@ input, button, select { outline: none; border: none; font-family: inherit; }
 .small-card.back { background: #1a3b5c url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><rect width="10" height="10" fill="%231e3c72"/><path d="M0 10L10 0" stroke="%232a5298" stroke-width="2"/></svg>'); border-color: #3b6bb4; color: transparent; }
 .small-card .suit { font-size: 16px; }
 
-/* 牌型文字 */
 .card-type-overlay { 
     position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
     font-size: 26px; font-weight: 900; color: #ffe600;
@@ -164,12 +228,10 @@ input, button, select { outline: none; border: none; font-family: inherit; }
 .type-max { color: #00f2fe; -webkit-text-stroke: 2px #003366; }
 .type-normal { color: #aaaaaa; -webkit-text-stroke: 2px #333; }
 
-/* 角标 */
 .banker-icon { position: absolute; top: -5px; left: -10px; background: #e53935; color: #fff; font-size: 11px; width: 22px; height: 22px; display: flex; justify-content: center; align-items: center; border-radius: 50%; font-weight: bold; border: 1px solid #fff; z-index: 20;}
 .multi-badge { position: absolute; top: -15px; right: -15px; color: #fff; font-size: 18px; font-weight: 900; font-family: 'Impact', sans-serif; text-shadow: 1px 1px 2px #000, 0 0 5px #ff9800; z-index: 20; }
 .ready-badge { color: #ff9800; font-size: 22px; font-weight: bold; font-family: 'ZCOOL KuaiLe', cursive; text-shadow: 1px 1px 3px #000, 0 0 8px #ffd700; z-index: 20;}
 
-/* 我的区域 */
 .my-area {
     position: absolute; bottom: 65px; left: 0; width: 100%; height: 100px; pointer-events: none; z-index: 20;
 }
@@ -188,7 +250,6 @@ input, button, select { outline: none; border: none; font-family: inherit; }
 .my-card-large.back { background: repeating-linear-gradient(45deg, #1e3c72, #1e3c72 6px, #2a5298 6px, #2a5298 12px); border-color: #3b6bb4; color: transparent; cursor: pointer; animation: pulse 1.5s infinite;}
 .my-card-large .suit { font-size: 30px; }
 
-/* 底部操作区 */
 .bottom-bar { 
     position: absolute; bottom: 0; left: 0; width: 100%; height: 60px;
     display: flex; justify-content: space-around; align-items: center; 
@@ -241,6 +302,7 @@ input, button, select { outline: none; border: none; font-family: inherit; }
 .dev-header span { color: #fff; display: none; }
 .dev-panel.expanded .dev-header span { display: block; font-size: 12px; cursor: pointer;}
 .dev-content { padding: 10px; display: none; }
+.close-btn { position: absolute; top: 10px; right: 10px; width: 30px; height: 30px; background: #e53935; color: #fff; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; cursor: pointer; z-index: 10;}
 
 @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0, 242, 254, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(0, 242, 254, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 242, 254, 0); } }
 </style>
@@ -248,40 +310,226 @@ input, button, select { outline: none; border: none; font-family: inherit; }
 <body>
 <audio id="bgmAudio" src="bgm.mp3" loop></audio>
 
-<div class="login-box" id="loginBox">
-    <div class="login-title">新天地</div>
-    <div class="input-group"><label>账号</label><input type="text" id="loginAccount" placeholder="请输入账号"></div>
-    <button class="btn" onclick="handleLogin()">登录</button>
+<!-- 登录面板 -->
+<div class="login-box" id="loginBox" style="display:none; width:100%; height:100%; padding:40px 20px; flex-direction:column; justify-content:center; background:#09050f;">
+    <div class="login-title" style="text-align:center; font-size:32px; font-weight:bold; color:var(--gold); margin-bottom:30px;">新天地</div>
+    <div class="input-group" style="margin-bottom:15px;">
+        <label style="display:block; font-size:13px; color:#aaa; margin-bottom:5px;">账号</label>
+        <input type="text" id="loginAccount" placeholder="请输入账号" style="width:100%; height:44px; background:rgba(42,45,59,0.8); border:1px solid #444; border-radius:8px; padding:0 12px; color:#fff;">
+    </div>
+    <button class="btn" onclick="handleLogin()" style="width:100%; height:44px; border-radius:8px; background:var(--gold); color:#111; font-size:16px; font-weight:bold; margin-top:10px;">登录</button>
+    <button class="btn btn-wechat" onclick="handleWechatLogin()" style="width:100%; height:44px; border-radius:8px; background:#07c160; color:#fff; margin-top:20px;">微信一键登录</button>
 </div>
 
-<div class="lobby-page" id="lobbyPage">
-    <div class="lobby-header">
-        <div class="user-avatar" id="lobbyAvatar">😎</div>
-        <div class="user-info"><div class="user-name" id="lobbyName">玩家</div><div class="user-id" id="lobbyId">编号: ---</div></div>
-        <button class="logout-btn" onclick="logout()">切换账号</button>
-        <div class="header-icons" style="margin-left:10px;">
-            <div class="icon-item" onclick="alert('俱乐部即将上线')"><span>👥</span>俱乐部</div>
-            <div class="icon-item" onclick="alert('战绩即将上线')"><span>🏆</span>战绩</div>
+<!-- 大厅主页面 -->
+<div class="lobby-page" id="lobbyPage" style="display: none;">
+    <!-- 顶部信息 -->
+    <div class="lobby-top">
+        <img class="lobby-avatar" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%232a2a2a'/><circle cx='50' cy='40' r='20' fill='%23888'/><path d='M20 90 Q50 60 80 90' stroke='%23888' stroke-width='15' fill='none'/></svg>">
+        <div class="lobby-user-info">
+            <div class="lobby-name-row">
+                <div class="lobby-name" id="lobbyName">玩家昵称</div>
+            </div>
+            <div class="lobby-id">编号:38591</div>
+            <div class="lobby-cards">
+                <span style="color:#ffcc00;">房卡</span> <span id="lobbyCards">0</span>
+            </div>
+        </div>
+        <div class="lobby-icons">
+            <div class="lobby-icon" onclick="openModal('shopModal')">
+                <div class="icon">🛒</div>
+                <div>商城</div>
+            </div>
+            <div class="lobby-icon" onclick="alert('发放房卡功能开发中')">
+                <div class="icon">🎁</div>
+                <div>发放房卡</div>
+            </div>
+            <div class="lobby-icon" onclick="openModal('moreModal')">
+                <div class="icon">👤</div>
+                <div>更多</div>
+            </div>
         </div>
     </div>
-    <div class="game-grid">
-        <div class="game-card" onclick="goToCreateRoom()">
-            <img src="bull.jpg" alt="明牌抢庄牛牛">
-            <div class="overlay">
-                <h3>明牌抢庄牛牛</h3>
-                <p>火爆开局</p>
+
+    <!-- 跑马灯 -->
+    <div class="marquee-box">
+        <div class="marquee-content">
+            <span style="color:#ffcc00;">📢 官方正版授权，禁止赌博，仅供娱乐，如有发现，封停账号，已更新二十一人牛牛！</span>
+        </div>
+    </div>
+
+    <!-- 游戏列表 -->
+    <div class="game-list">
+        <div class="game-item" onclick="goToCreateRoom()">
+            <div class="game-title-tag">拼十集合</div>
+            <div class="game-img-box bg-niu">
+                <div style="font-size:60px; text-shadow: 2px 2px 5px #000;">🐮</div>
             </div>
         </div>
-        <div class="game-card" onclick="alert('快乐二八杠即将上线！')">
-            <img src="game_28.jpg" alt="快乐二八杠">
-            <div class="overlay">
-                <h3 style="color:#ff4d4f; text-shadow:0 0 10px #fff;">快乐二八杠</h3>
-                <p>敬请期待</p>
+        <div class="game-item" onclick="alert('八人大天九即将上线')">
+            <div class="game-title-tag">八人大天九</div>
+            <div class="game-img-box bg-big9">
+                <div style="font-size:60px; text-shadow: 2px 2px 5px #000;">🀄</div>
             </div>
+        </div>
+        <div class="game-item" onclick="alert('拼三张集合即将上线')">
+            <div class="game-title-tag">拼三张集合</div>
+            <div class="game-img-box bg-three">
+                <div style="font-size:60px; text-shadow: 2px 2px 5px #000;">👸</div>
+            </div>
+        </div>
+        <div class="game-item" onclick="alert('小天九集合即将上线')">
+            <div class="game-title-tag">小天九集合</div>
+            <div class="game-img-box bg-small9">
+                <div style="font-size:60px; text-shadow: 2px 2px 5px #000;">🃏</div>
+            </div>
+        </div>
+        <div class="game-item" onclick="alert('超级三加一即将上线')">
+            <div class="game-title-tag">超级三加一</div>
+            <div class="game-img-box bg-super3">
+                <div style="font-size:60px; text-shadow: 2px 2px 5px #000;">👑</div>
+            </div>
+        </div>
+        <div class="game-item" onclick="alert('三公集合即将上线')">
+            <div class="game-title-tag">三公集合</div>
+            <div class="game-img-box bg-gong">
+                <div style="font-size:60px; text-shadow: 2px 2px 5px #000;">🎴</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部导航 -->
+    <div class="lobby-bottom-nav">
+        <div class="nav-btn-share" onclick="alert('链接已复制')">
+            <div class="icon">🔗</div>
+            <div>复制链接</div>
+        </div>
+        <div class="nav-bar-btn btn-hall">大厅</div>
+        <div class="nav-bar-btn btn-join" onclick="openModal('joinRoomModal')">加入房间</div>
+        <div class="nav-bar-btn btn-club" onclick="openModal('clubModal')">俱乐部</div>
+        <div class="nav-btn" onclick="toggleChatPanel()">
+            <div class="btn-chat">聊天</div>
         </div>
     </div>
 </div>
 
+<!-- 弹窗：更多设置 -->
+<div class="modal-overlay" id="moreModal">
+    <div class="modal-content">
+        <div class="close-btn" onclick="closeModal('moreModal')">X</div>
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:15px; padding-bottom:10px; border-bottom:1px solid #444;">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%232a2a2a'/><circle cx='50' cy='40' r='20' fill='%23888'/><path d='M20 90 Q50 60 80 90' stroke='%23888' stroke-width='15' fill='none'/></svg>" style="width:50px; border-radius:50%;">
+            <div>
+                <div style="font-size:16px; font-weight:bold; color:#fff;">玩家昵称</div>
+                <div style="font-size:12px; color:#a08bdf;">编号:38591</div>
+            </div>
+            <div style="margin-left:auto; background:#111; border:1px solid #d4a34b; border-radius:15px; padding:5px 15px; text-align:center;">
+                <div style="color:#ffcc00; font-size:14px; font-weight:bold;">0张</div>
+                <div style="font-size:12px; color:#aaa;">房卡</div>
+            </div>
+        </div>
+        <div class="more-menu-list">
+            <div class="more-menu-item" onclick="alert('俱乐部管理')"><div class="icon-box">👥 俱乐部管理</div><div class="arrow">></div></div>
+            <div class="more-menu-item" onclick="openModal('historyModal')"><div class="icon-box">🏆 游戏记录</div><div class="arrow">></div></div>
+            <div class="more-menu-item" onclick="alert('更新资料')"><div class="icon-box">📄 更新资料</div><div class="arrow">></div></div>
+            <div class="more-menu-item" onclick="alert('发送房卡')"><div class="icon-box">🎴 发送房卡</div><div class="arrow">></div></div>
+            <div class="more-menu-item" onclick="alert('查询房卡')"><div class="icon-box">🔍 查询房卡</div><div class="arrow">></div></div>
+            <div class="more-menu-item" onclick="alert('转移房卡')"><div class="icon-box">🔄 转移房卡</div><div class="arrow">></div></div>
+            <div class="more-menu-item" onclick="alert('开房记录')"><div class="icon-box">🏠 开房记录</div><div class="arrow">></div></div>
+            <div class="more-menu-item" onclick="alert('房卡明细')"><div class="icon-box">📊 房卡明细</div><div class="arrow">></div></div>
+            <div class="more-menu-item" onclick="logout()"><div class="icon-box">👥 切换账号</div><div class="arrow">></div></div>
+            <div class="more-menu-item" onclick="alert('绑定手机')"><div class="icon-box">📱 绑定手机 <span style="float:right; color:#666; font-size:14px; font-weight:normal;">未绑定</span></div><div class="arrow">></div></div>
+            <div class="more-menu-item" onclick="alert('设置密码')"><div class="icon-box">🛡️ 设置密码</div><div class="arrow">></div></div>
+            <div class="more-menu-item" onclick="alert('防作弊')"><div class="icon-box">⭐ 防作弊</div><div class="arrow">></div></div>
+        </div>
+        <button onclick="closeModal('moreModal')" style="margin-top:15px; padding:12px; border-radius:25px; background:linear-gradient(180deg, #ffb347, #ff7b00); color:#fff; font-size:18px; font-weight:bold; border:2px solid #ffeb3b;">返回大厅</button>
+    </div>
+</div>
+
+<!-- 弹窗：商城 -->
+<div class="modal-overlay" id="shopModal">
+    <div class="modal-content" style="max-height: 85vh;">
+        <div class="close-btn" onclick="closeModal('shopModal')" style="background:#8e24aa;">X</div>
+        <div class="shop-header">🎁 商城 🎁</div>
+        <div class="shop-tabs">
+            <div class="shop-tab active" onclick="switchShopTab('cardBack', this)">卡背</div>
+            <div class="shop-tab" onclick="switchShopTab('avatarFrame', this)">相框</div>
+        </div>
+        <div class="shop-grid" id="shopGrid">
+            <!-- JS动态生成 -->
+        </div>
+    </div>
+</div>
+
+<!-- 弹窗：历史战绩 -->
+<div class="modal-overlay" id="historyModal">
+    <div class="modal-content" style="background: linear-gradient(180deg, #1a237e, #000051);">
+        <div class="close-btn" onclick="closeModal('historyModal')">X</div>
+        <div style="text-align:center; font-size:22px; color:#ffcc00; margin-bottom:15px; font-weight:bold;">历史战绩</div>
+        <div class="history-list">
+            <div class="history-item">
+                <div class="history-left">
+                    <div class="history-icon">🐮</div>
+                    <div class="history-info">
+                        <div>房间号: 8747914</div>
+                        <div style="font-size:12px; color:#666;">10-26 00:17</div>
+                    </div>
+                </div>
+                <div class="history-score score-lose">-170 ></div>
+            </div>
+            <div class="history-item">
+                <div class="history-left">
+                    <div class="history-icon">🐮</div>
+                    <div class="history-info">
+                        <div>房间号: 8747884</div>
+                        <div style="font-size:12px; color:#666;">10-25 23:55</div>
+                    </div>
+                </div>
+                <div class="history-score score-win">+400 ></div>
+            </div>
+        </div>
+        <div style="text-align:center; color:#00bcd4; margin-top:15px; cursor:pointer;">点击加载更多</div>
+    </div>
+</div>
+
+<!-- 弹窗：俱乐部 -->
+<div class="modal-overlay" id="clubModal">
+    <div class="modal-content" style="background: linear-gradient(180deg, #311b92, #1a103c);">
+        <div class="close-btn" onclick="closeModal('clubModal')">X</div>
+        <div class="club-header">当前俱乐部：<br><span style="font-size:16px; color:#fff; font-weight:bold;">伊仕利全案整装-的俱乐部</span> (id:15648)</div>
+        <div style="display:flex; justify-content:space-between; font-size:12px; color:#a08bdf; padding:10px 0; border-bottom:1px solid #444;">
+            <div>房主</div><div>房号/游戏</div><div>人数/模式</div><div>操作</div>
+        </div>
+        <div style="overflow-y:auto; margin-top:10px;">
+            <div class="club-room-item">
+                <div>
+                    <div style="font-weight:bold; margin-bottom:5px;">伊仕利全案整装-</div>
+                    <div style="color:#666; font-size:12px;">房号:8747963 | 3人牛牛</div>
+                </div>
+                <div style="text-align:center; font-size:12px;">经典模式<br>7局</div>
+                <div style="background:#8e24aa; color:#fff; padding:5px 10px; border-radius:5px; font-size:12px;">复制链接</div>
+            </div>
+        </div>
+        <div class="club-btn-row">
+            <div class="club-btn" style="background:#29b6f6;" onclick="alert('创建俱乐部')">创建俱乐部</div>
+            <div class="club-btn" style="background:#ff9800;" onclick="alert('加入俱乐部')">加入俱乐部</div>
+            <div class="club-btn" style="background:#4caf50;" onclick="alert('历史战绩')">历史战绩</div>
+            <div class="club-btn" style="background:#8bc34a;" onclick="alert('刷新')">刷新</div>
+        </div>
+    </div>
+</div>
+
+<!-- 弹窗：加入房间 -->
+<div class="modal-overlay" id="joinRoomModal">
+    <div class="modal-content">
+        <div class="close-btn" onclick="closeModal('joinRoomModal')">X</div>
+        <div style="text-align:center; font-size:20px; margin-bottom:15px; color:#fff;">请输入房间号</div>
+        <input type="number" style="width:100%; height:44px; background:#222; border:1px solid #555; border-radius:8px; color:#fff; padding:0 15px; font-size:18px; margin-bottom:15px;">
+        <button style="width:100%; padding:12px; border-radius:25px; background:linear-gradient(180deg, #29b6f6, #0277bd); color:#fff; font-size:18px; font-weight:bold; border:2px solid #81d4fa;" onclick="closeModal('joinRoomModal')">加入</button>
+    </div>
+</div>
+
+<!-- ================= 游戏房间 ================= -->
 <div class="game-room" id="gameRoom">
     <div class="top-bar">
         <div class="top-round-text"><span id="nowRound">1</span>/24局</div>
@@ -328,7 +576,9 @@ input, button, select { outline: none; border: none; font-family: inherit; }
     </div>
 
     <div class="bottom-bar">
-        <div class="bottom-btn"><span style="color:#ffeb3b;">🎴</span>房卡 0</div>
+        <!-- 加机器人按钮在这里 -->
+        <div class="bottom-btn" onclick="addBot()"><span style="color:#ffeb3b;">🤖</span>加机器人</div>
+        
         <div class="bottom-btn circle-btn bg-red" onclick="toggleAutoReady()" id="autoReadyBtn" style="width:50px; border-radius:20px;">自动<br>准备</div>
         <div class="bottom-btn circle-btn bg-purple" onclick="toggleChatPanel()" style="width:50px; border-radius:20px;">聊天<br>室</div>
         <div class="bottom-btn circle-btn bg-purple" onclick="copyRoomLink()" style="width:50px; border-radius:20px;">复制<br>链接</div>
@@ -404,16 +654,18 @@ let startLeftTime = 5;
 let revealTimeoutList = []; 
 
 const seatPositions = [
-    { id: 1, top: 15, left: 20, class: 'left-side' },
-    { id: 2, top: 30, left: 20, class: 'left-side' },
-    { id: 3, top: 45, left: 20, class: 'left-side' },
-    { id: 4, top: 60, left: 20, class: 'left-side' },
-    { id: 5, top: 75, left: 20, class: 'left-side' },
-    { id: 6, top: 15, right: 20, class: 'right-side' },
-    { id: 7, top: 30, right: 20, class: 'right-side' },
-    { id: 8, top: 45, right: 20, class: 'right-side' },
-    { id: 9, top: 60, right: 20, class: 'right-side' },
-    { id: 10, top: 75, right: 20, class: 'right-side' }
+    { id: 1, top: 28, left: 20, class: 'left-side' },
+    { id: 2, top: 44, left: 20, class: 'left-side' },
+    { id: 3, top: 60, left: 20, class: 'left-side' },
+    { id: 4, top: 76, left: 20, class: 'left-side' },
+    
+    { id: 5, top: 28, right: 20, class: 'right-side' },
+    { id: 6, top: 44, right: 20, class: 'right-side' },
+    { id: 7, top: 60, right: 20, class: 'right-side' },
+    { id: 8, top: 76, right: 20, class: 'right-side' },
+    
+    { id: 9, top: 12, left: '25%', class: 'top-side' },
+    { id: 10, top: 12, left: '75%', class: 'top-side' }
 ];
 
 window.onload = function() {
@@ -431,18 +683,79 @@ window.onload = function() {
         });
     }
 
-    document.getElementById('loginBox').style.display = 'none';
+    if(localStorage.getItem('xtd_logined')) {
+        document.getElementById('loginBox').style.display = 'none';
+        document.getElementById('lobbyPage').style.display = 'flex';
+        document.getElementById('lobbyName').innerText = localStorage.getItem('xtd_name') || '玩家';
+    } else {
+        document.getElementById('loginBox').style.display = 'flex';
+    }
+
     currentRoomId = '新天地_' + Math.floor(100000+Math.random()*900000);
-    myNickname = '玩家' + Math.floor(Math.random()*100);
     document.getElementById('roomIdText').innerText = currentRoomId.replace('新天地_','');
-    
-    document.getElementById('lobbyPage').style.display = 'flex';
-    document.getElementById('gameRoom').style.display = 'none';
     
     initDrag();
     initDevSeatOptions();
     initChatPanel();
 }
+
+function handleLogin() {
+    let acc = document.getElementById('loginAccount').value.trim();
+    if(!acc) acc = '玩家' + Math.floor(Math.random()*100);
+    localStorage.setItem('xtd_logined', '1');
+    localStorage.setItem('xtd_name', acc);
+    location.reload();
+}
+function handleWechatLogin() {
+    localStorage.setItem('xtd_logined', '1');
+    localStorage.setItem('xtd_name', '微信玩家');
+    location.reload();
+}
+function logout() {
+    localStorage.clear();
+    location.reload();
+}
+
+function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+const shopItems = {
+    cardBack: [
+        { name: '经典蓝', price: '免费', icon: '🂠' },
+        { name: '福星高照', price: '房卡x8', icon: '🧧' },
+        { name: '欧式花纹', price: '免费', icon: '🂠' },
+        { name: '幸运星', price: '免费', icon: '⭐' },
+        { name: '经典扑克', price: '免费', icon: '🂡' },
+        { name: '菱形宝石', price: '房卡x8', icon: '💎' },
+        { name: '无敌战神', price: '房卡x68', icon: '⚔️' }
+    ],
+    avatarFrame: [
+        { name: '粉红猫爪', price: '免费', icon: '🐾' },
+        { name: '晴天娃娃', price: '免费', icon: '☀️' },
+        { name: '快乐娃娃', price: '免费', icon: '🌧️' },
+        { name: '冰蓝之心', price: '房卡x8', icon: '❄️' },
+        { name: '天使之翼', price: '房卡x18', icon: '🕊️' },
+        { name: '至尊皇冠', price: '房卡x33', icon: '👑' }
+    ]
+};
+function switchShopTab(type, el) {
+    document.querySelectorAll('.shop-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    let grid = document.getElementById('shopGrid');
+    let html = '';
+    shopItems[type].forEach(item => {
+        let priceClass = item.price === '免费' ? 'free' : '';
+        html += `
+            <div class="shop-item">
+                <div class="shop-item-title">${item.name}</div>
+                <div class="shop-item-img">${item.icon}</div>
+                <div class="shop-item-price ${priceClass}">${item.price}</div>
+            </div>
+        `;
+    });
+    grid.innerHTML = html;
+}
+switchShopTab('cardBack', document.querySelectorAll('.shop-tab')[0]);
 
 function initDrag() {
     const panel = document.getElementById('devPanel');
@@ -532,6 +845,8 @@ function goToCreateRoom() {
     document.getElementById('lobbyPage').style.display = 'none';
     document.getElementById('gameRoom').style.display = 'flex';
     
+    myNickname = localStorage.getItem('xtd_name') || '我';
+
     // 默认坐下8个机器人，自己坐9号位
     for(let i=1; i<=10; i++) {
         if(i !== 9 && i <= 8) {
@@ -547,6 +862,24 @@ function goToCreateRoom() {
     document.getElementById('devPanel').style.display = 'block';
 
     renderSeats(); updateActionButtons();
+}
+
+// 测试加机器人逻辑
+function addBot() {
+    if(gamePhase !== 'wait' && gamePhase !== 'result') return alert('牌局中无法加入');
+    let e = -1;
+    for(let i=1; i<=10; i++) {
+        if(!occupiedSeats[i]) { e = i; break; }
+    }
+    if(e === -1) return alert('房间已满座');
+    
+    occupiedSeats[e] = '机器人' + e;
+    seatScores[e] = 0;
+    readySet.add(e);
+    
+    renderSeats();
+    updateActionButtons();
+    checkStartGame();
 }
 
 function checkStartGame() {
@@ -576,7 +909,6 @@ function checkStartGame() {
     }
 }
 
-// 排序手牌（从小到大），确保暗牌在最后
 function sortHandCards(cards) {
     let getP = v => v==='A'?1:(['J','Q','K','10'].includes(v)?10:parseInt(v));
     let hiddenCard = cards.find(c => c.hide); 
@@ -603,8 +935,13 @@ function renderSeats() {
         div.className = 'seat-box ' + (occupiedSeats[seatId] ? 'occupied ' + pos.class : 'empty');
         
         div.style.top = pos.top + '%';
-        if(pos.class === 'left-side') div.style.left = pos.left + 'px';
-        if(pos.class === 'right-side') div.style.right = pos.right + 'px';
+        if (pos.class === 'left-side') {
+            div.style.left = pos.left + 'px';
+        } else if (pos.class === 'right-side') {
+            div.style.right = pos.right + 'px';
+        } else {
+            div.style.left = pos.left;
+        }
         
         if (occupiedSeats[seatId]) {
             let isShow = (gamePhase==='showdown' || gamePhase==='result' || isRevealed[seatId] || myRole==='admin');
@@ -737,7 +1074,6 @@ function startNewRound() {
     bankerSeat=0; grabMultipliers={}; betMultipliers={}; isRevealed={}; 
     playerCards={}; playerCardInfo={};
     
-    // 严格按照 seatRules 规则发牌
     for(let i=1;i<=10;i++){ 
         if(!occupiedSeats[i]||!readySet.has(i)) continue; 
         let t = (seatRules[i] && seatRules[i].cardType) ? seatRules[i].cardType : 'random'; 
@@ -1020,14 +1356,16 @@ function sendChat(text, audioFile){
     }
 }
 
-function copyRoomLink() {
-    alert('链接已复制！');
-}
-
-function exitRoom() {
-    if(confirm('确定要退出当前房间吗？')) {
-        window.location.reload();
-    }
+function showClub() { openModal('clubModal'); }
+function copyRoomLink() { alert('链接已复制！'); }
+function exitRoom() { 
+    if(confirm('确定要退出当前房间吗？')) { 
+        document.getElementById('gameRoom').style.display = 'none';
+        document.getElementById('lobbyPage').style.display = 'flex';
+        // 重置状态
+        gamePhase='wait'; bankerSeat=0; playerCards={}; playerCardInfo={}; isRevealed={}; readySet.clear(); occupiedSeats={};
+        updateActionButtons();
+    } 
 }
 
 function toggleBgm() { 
